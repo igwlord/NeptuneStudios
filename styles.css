@@ -206,18 +206,41 @@ body {
     align-items: center;
     text-decoration: none;
     transition: all 0.3s ease;
+    position: relative;
 }
 
-.brand:hover {
-    transform: scale(1.05);
+.brand::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    background: radial-gradient(circle at center, rgba(147, 51, 234, 0.1) 0%, transparent 70%);
+    border-radius: 12px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+}
+
+.brand:hover::before {
+    opacity: 1;
 }
 
 .brand img {
     height: 2.5rem; /* h-10 = 40px */
     width: auto;
     margin-right: 0.5rem;
-    filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.5));
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3)) 
+            drop-shadow(0 0 10px rgba(147, 51, 234, 0.2));
     transition: filter 0.3s ease;
+}
+
+.brand span {
+    text-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.5),
+        0 0 10px rgba(147, 51, 234, 0.3);
+    letter-spacing: 0.1em;
 }
 
 .brand:hover img {
@@ -1510,3 +1533,208 @@ header nav a.active {
         0 0 30px rgba(217, 70, 239, 0.2);
     animation: iaGlow 2s ease-in-out infinite alternate;
 }
+
+/* ===================================
+   PROCESO VISUAL INTERACTIVO 
+   =================================== */
+
+/* Pasos del proceso */
+.process-step {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease-out;
+}
+
+.process-step.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Tarjetas del proceso */
+.process-card {
+    position: relative;
+    backdrop-filter: blur(20px);
+    background: rgba(147, 51, 234, 0.1);
+    border: 1px solid rgba(147, 51, 234, 0.2);
+    overflow: hidden;
+}
+
+.process-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(from 0deg at 50% 50%, 
+                               rgba(147, 51, 234, 0.1) 0deg, 
+                               rgba(236, 72, 153, 0.1) 90deg, 
+                               rgba(147, 51, 234, 0.1) 180deg, 
+                               rgba(59, 130, 246, 0.1) 270deg, 
+                               rgba(147, 51, 234, 0.1) 360deg);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    animation: rotate 8s linear infinite;
+}
+
+.process-card:hover::before {
+    opacity: 1;
+}
+
+@keyframes rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Iconos del proceso */
+.process-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.process-icon::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transform: rotate(45deg);
+    transition: transform 0.6s ease;
+}
+
+.process-card:hover .process-icon::before {
+    transform: rotate(45deg) translateX(100%);
+}
+
+/* Números de proceso */
+.process-number {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(147, 51, 234, 0.8), rgba(236, 72, 153, 0.8));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: white;
+    font-family: 'Orbitron', monospace;
+    box-shadow: 
+        0 0 30px rgba(147, 51, 234, 0.5),
+        0 0 60px rgba(147, 51, 234, 0.3);
+    position: relative;
+    z-index: 10;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.5s ease;
+}
+
+.process-number:hover {
+    transform: scale(1.1);
+    box-shadow: 
+        0 0 40px rgba(147, 51, 234, 0.7),
+        0 0 80px rgba(147, 51, 234, 0.4);
+}
+
+/* Tags del proceso */
+.process-tag {
+    display: inline-block;
+    background: rgba(147, 51, 234, 0.2);
+    color: rgba(147, 51, 234, 1);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border: 1px solid rgba(147, 51, 234, 0.3);
+    transition: all 0.3s ease;
+}
+
+.process-tag:hover {
+    background: rgba(147, 51, 234, 0.3);
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Puntos de progreso */
+.progress-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: rgba(147, 51, 234, 0.3);
+    border: 2px solid rgba(147, 51, 234, 0.5);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.progress-dot.active {
+    background: linear-gradient(135deg, #9333EA, #EC4899);
+    border-color: #9333EA;
+    box-shadow: 0 0 20px rgba(147, 51, 234, 0.6);
+}
+
+.progress-dot::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: white;
+    transition: transform 0.3s ease;
+}
+
+.progress-dot.active::before {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* Línea de conexión mejorada */
+.process-step:nth-child(odd) .process-card {
+    animation-delay: 0.2s;
+}
+
+.process-step:nth-child(even) .process-card {
+    animation-delay: 0.4s;
+}
+
+/* Efectos hover para toda la sección */
+.process-step:hover .process-number {
+    transform: scale(1.05);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .process-number {
+        width: 80px;
+        height: 80px;
+        font-size: 1.8rem;
+        margin: 0 auto 20px;
+    }
+    
+    .process-card {
+        margin-bottom: 30px;
+    }
+    
+    .process-icon {
+        width: 56px;
+        height: 56px;
+    }
+}
+
+/* Animación de entrada secuencial */
+.process-step:nth-child(1) { animation-delay: 0.1s; }
+.process-step:nth-child(2) { animation-delay: 0.3s; }
+.process-step:nth-child(3) { animation-delay: 0.5s; }
+.process-step:nth-child(4) { animation-delay: 0.7s; }

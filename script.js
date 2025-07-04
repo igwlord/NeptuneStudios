@@ -167,6 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
         initTestimonials();
         initContactForm();
         initScrollBehavior();
+        initProcessSection();
         
         // Inicializar fondo 3D si está disponible
         if (typeof init3DBackground === 'function') {
@@ -308,6 +309,12 @@ document.addEventListener('DOMContentLoaded', () => {
             { title: "Evolución Continua", content: "El viaje no termina con el lanzamiento. Monitoreamos, optimizamos y evolucionamos continuamente tu ecosistema de IA para asegurar que siempre estés a la vanguardia." }
         ];
         const accordionContainer = document.getElementById('accordion-container');
+        
+        // Verificar si el elemento existe antes de continuar
+        if (!accordionContainer) {
+            return;
+        }
+        
         accordionContainer.innerHTML = accordionData.map((item, index) => `
             <div class="glassmorphism rounded-lg">
                 <h2>
@@ -331,8 +338,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const isExpanded = button.getAttribute('aria-expanded') === 'true';
                 button.setAttribute('aria-expanded', !isExpanded);
                 content.style.maxHeight = !isExpanded ? content.scrollHeight + 'px' : '0px';
-            });
-        });
+            });        });
+
+        // Acordeón inicializado
     }
 
     // --- 7. LÓGICA DE TESTIMONIOS ---
@@ -371,15 +379,12 @@ document.addEventListener('DOMContentLoaded', () => {
         window.bypassRateLimit = function() {
             localStorage.clear(); // Limpiar todo el localStorage
             sessionStorage.clear(); // Limpiar todo el sessionStorage
-            console.log('✅ Rate limiting completamente bypasseado');
-            console.log('✅ localStorage y sessionStorage limpiados');
             return 'Rate limiting deshabilitado para testing';
         };
         
         // FUNCIÓN GLOBAL PARA ACTIVAR MODO TESTING
         window.activarModoTesting = function() {
             window.TESTING_MODE = true;
-            console.log('🧪 MODO TESTING ACTIVADO');
             console.log('🧪 El formulario simulará envío exitoso sin usar backend');
             return 'Modo testing activado - formulario will simulate success';
         };
@@ -706,6 +711,208 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // ===================================
+    // PROCESO VISUAL INTERACTIVO
+    // ===================================
+    
+    function initProcessSection() {
+        const processSteps = document.querySelectorAll('.process-step');
+        const progressDots = document.querySelectorAll('.progress-dot');
+        
+        // Observador para animaciones de entrada
+        const processObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 200);
+                }
+            });
+        }, {
+            threshold: 0.2,
+            rootMargin: '0px 0px -100px 0px'
+        });
+        
+        // Observar cada paso
+        processSteps.forEach(step => {
+            processObserver.observe(step);
+        });
+        
+        // Funcionalidad de los dots de progreso
+        progressDots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                // Remover active de todos los dots
+                progressDots.forEach(d => d.classList.remove('active'));
+                // Agregar active al dot clickeado
+                dot.classList.add('active');
+                
+                // Hacer scroll al paso correspondiente
+                const targetStep = document.querySelector(`[data-step="${index + 1}"]`);
+                if (targetStep) {
+                    targetStep.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                }
+                
+                // Efecto visual en el paso
+                const stepCard = targetStep.querySelector('.process-card');
+                stepCard.style.transform = 'scale(1.02)';
+                setTimeout(() => {
+                    stepCard.style.transform = '';
+                }, 300);
+            });
+        });
+        
+        // Actualizar dot activo basado en scroll
+        const updateActiveStep = () => {
+            const scrollPosition = window.scrollY + window.innerHeight / 2;
+            
+            processSteps.forEach((step, index) => {
+                const stepTop = step.offsetTop;
+                const stepBottom = stepTop + step.offsetHeight;
+                
+                if (scrollPosition >= stepTop && scrollPosition <= stepBottom) {
+                    progressDots.forEach(d => d.classList.remove('active'));
+                    progressDots[index].classList.add('active');
+                }
+            });
+        };
+        
+        // Throttle function para performance
+        let ticking = false;
+        const throttledUpdateActiveStep = () => {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    updateActiveStep();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        };
+        
+        window.addEventListener('scroll', throttledUpdateActiveStep);
+        
+        // Efectos hover adicionales
+        processSteps.forEach(step => {
+            const card = step.querySelector('.process-card');
+            const icon = step.querySelector('.process-icon');
+            
+            card.addEventListener('mouseenter', () => {
+                icon.style.transform = 'translateY(-5px) scale(1.1)';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                icon.style.transform = '';
+            });
+        });
+        
+        console.log('✅ Proceso visual interactivo inicializado');
+    }
+    
+    // --- PROCESO VISUAL INTERACTIVO ---
+    function initProcessTimeline() {
+        console.log('🔧 Inicializando proceso visual...');
+        
+        const processSteps = document.querySelectorAll('.process-step');
+        const progressDots = document.querySelectorAll('.progress-dot');
+        
+        console.log(`📊 Encontrados ${processSteps.length} pasos del proceso`);
+        console.log(`📊 Encontrados ${progressDots.length} progress dots`);
+        
+        if (!processSteps.length) {
+            console.error('❌ No se encontraron pasos del proceso');
+            return;
+        }
+
+        // Forzar visibilidad de todos los pasos inmediatamente para debugging
+        console.log('🚀 Forzando visibilidad de todos los pasos...');
+        processSteps.forEach((step, index) => {
+            step.classList.add('visible');
+            console.log(`✅ Paso ${index + 1} marcado como visible`);
+        });
+
+        // Activar el primer dot
+        if (progressDots.length > 0) {
+            progressDots[0].classList.add('active');
+            console.log('✅ Primer progress dot activado');
+        }
+
+        // Mostrar pasos en scroll
+        const processObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    
+                    // Activar el dot correspondiente
+                    const stepNumber = entry.target.dataset.step;
+                    if (stepNumber) {
+                        // Desactivar todos los dots
+                        progressDots.forEach(dot => dot.classList.remove('active'));
+                        // Activar el dot actual
+                        const currentDot = document.querySelector(`[data-step="${stepNumber}"]`);
+                        if (currentDot && currentDot.classList.contains('progress-dot')) {
+                            currentDot.classList.add('active');
+                        }
+                    }
+                }
+            });
+        }, {
+            threshold: 0.3,
+            rootMargin: '-50px'
+        });
+
+        // Observar todos los pasos (comentado temporalmente para debugging)
+        /*
+        processSteps.forEach(step => {
+            processObserver.observe(step);
+        });
+        */
+
+        // Interactividad de los progress dots
+        progressDots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                const stepNumber = dot.dataset.step;
+                const targetStep = document.querySelector(`.process-step[data-step="${stepNumber}"]`);
+                
+                if (targetStep) {
+                    targetStep.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                    
+                    // Activar el dot clickeado
+                    progressDots.forEach(d => d.classList.remove('active'));
+                    dot.classList.add('active');
+                    
+                    // Hacer visible el step si no lo está
+                    targetStep.classList.add('visible');
+                }
+            });
+        });
+
+        console.log('✅ Proceso visual inicializado correctamente con debugging activo');
+    }
+
+    // --- INICIALIZACIÓN SIMPLIFICADA ---
+    document.addEventListener('DOMContentLoaded', async () => {
+        // Comentado temporalmente para evitar errores 404/500
+        // analytics = new AnalyticsClient();
+        // await getCSRFToken();
+        
+        // Inicializar funciones básicas
+        // initEnhancedContactForm(); // Reemplazado por initContactForm()
+        // initEnhancedQuiz(); // Comentado temporalmente
+        // await loadTestimonials(); // Comentado temporalmente
+        
+        // console.log('Página cargada correctamente');
+    });
+
+    // Inicializar el fondo 3D cuando el DOM esté listo
+    document.addEventListener('DOMContentLoaded', () => {
+        init3DBackground();
+        animate3D();
+    });
 });
 
 // --- 10. ANIMACIÓN DE FONDO CON THREE.JS (OPTIMIZADA) ---
@@ -1437,18 +1644,69 @@ function throttle(func, wait) {
     };
 }
 
+// --- WHATSAPP LINK SEGURO ---
+function initSecureWhatsApp() {
+    const whatsappLink = document.getElementById('whatsapp-link');
+    if (!whatsappLink) return;
+
+    // Número ofuscado por seguridad - dividido en partes
+    const parts = ['54', '911', '25124', '207'];
+    const fullNumber = parts.join('');
+    
+    // Mensaje predefinido
+    const message = encodeURIComponent('Hola Neptune, me interesa conocer más sobre sus servicios de IA');
+    
+    // Construir URL de WhatsApp de forma segura
+    const whatsappURL = `https://wa.me/${fullNumber}?text=${message}`;
+    
+    // Event listener en lugar de href directo
+    whatsappLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Verificar que es un click legítimo (no automático)
+        if (e.isTrusted) {
+            window.open(whatsappURL, '_blank', 'noopener,noreferrer');
+            
+            // Analytics tracking (si está disponible)
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'whatsapp_contact', {
+                    'event_category': 'contact',
+                    'event_label': 'whatsapp_click'
+                });
+            }
+            
+            console.log('📱 WhatsApp link clicked securely');
+        }
+    });
+    
+    // Agregar hover effect adicional
+    whatsappLink.addEventListener('mouseenter', function() {
+        this.style.transform = 'scale(1.02)';
+    });
+    
+    whatsappLink.addEventListener('mouseleave', function() {
+        this.style.transform = 'scale(1)';
+    });
+    
+    console.log('✅ WhatsApp link configurado de forma segura');
+}
+
 // --- INICIALIZACIÓN SIMPLIFICADA ---
 document.addEventListener('DOMContentLoaded', async () => {
     // Comentado temporalmente para evitar errores 404/500
     // analytics = new AnalyticsClient();
     // await getCSRFToken();
     
-    // Inicializar funciones básicas
-    // initEnhancedContactForm(); // Reemplazado por initContactForm()
-    // initEnhancedQuiz(); // Comentado temporalmente
-    // await loadTestimonials(); // Comentado temporalmente
-    
-    // console.log('Página cargada correctamente');
+    // Esperar un momento para asegurar que el DOM esté completamente renderizado
+    setTimeout(() => {
+        // Inicializar funciones básicas
+        initProcessTimeline(); // ✅ NUEVO: Proceso visual interactivo
+        // initEnhancedContactForm(); // Reemplazado por initContactForm()
+        // initEnhancedQuiz(); // Comentado temporalmente
+        // await loadTestimonials(); // Comentado temporalmente
+        
+        console.log('Página cargada correctamente - Proceso visual inicializado');
+    }, 100);
 });
 
 // Inicializar el fondo 3D cuando el DOM esté listo
@@ -1456,3 +1714,6 @@ document.addEventListener('DOMContentLoaded', () => {
     init3DBackground();
     animate3D();
 });
+
+// Log de confirmación de carga del script
+console.log('🚀 Script.js cargado correctamente');
