@@ -32,15 +32,33 @@ exports.handler = async (event, context) => {
 
   try {
     // Parsear el body
+    console.log('Body recibido:', event.body);
     const { nombre, email, mensaje } = JSON.parse(event.body);
+    console.log('Datos parseados:', { nombre, email, mensaje });
+    
+    // Limpiar datos (trim)
+    const nombreClean = nombre ? nombre.trim() : '';
+    const emailClean = email ? email.trim() : '';
+    const mensajeClean = mensaje ? mensaje.trim() : '';
+    
+    console.log('Datos limpiados:', { nombreClean, emailClean, mensajeClean });
 
-    // Validación básica
-    if (!nombre || !email || !mensaje) {
+    // Validación básica mejorada
+    if (!nombreClean || !emailClean || !mensajeClean) {
+      console.log('Validación fallida:', { 
+        nombre: !!nombreClean, 
+        email: !!emailClean, 
+        mensaje: !!mensajeClean,
+        nombreLength: nombreClean.length,
+        emailLength: emailClean.length,
+        mensajeLength: mensajeClean.length
+      });
       return {
         statusCode: 400,
         headers,
         body: JSON.stringify({ 
           success: false, 
+          error: 'Todos los campos son obligatorios',
           message: 'Todos los campos son obligatorios' 
         })
       };
@@ -48,19 +66,21 @@ exports.handler = async (event, context) => {
 
     // Validar formato de email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    if (!emailRegex.test(emailClean)) {
+      console.log('Email inválido:', emailClean);
       return {
         statusCode: 400,
         headers,
         body: JSON.stringify({ 
           success: false, 
+          error: 'Formato de email inválido',
           message: 'Formato de email inválido' 
         })
       };
     }
 
     // Configurar el transporter de nodemailer
-    const transporter = nodemailer.createTransporter({
+    const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
         user: process.env.EMAIL_USER,
@@ -70,9 +90,9 @@ exports.handler = async (event, context) => {
 
     // Configurar el email
     const mailOptions = {
-      from: `"${nombre}" <${process.env.EMAIL_USER}>`,
+      from: `"${nombreClean}" <${process.env.EMAIL_USER}>`,
       to: process.env.EMAIL_USER,
-      subject: `💼 Nueva consulta desde Neptune Landing - ${nombre}`,
+      subject: `💼 Nueva consulta desde Neptune Landing - ${nombreClean}`,
       html: `
         <!DOCTYPE html>
         <html>
@@ -97,15 +117,15 @@ exports.handler = async (event, context) => {
             <div class="content">
               <div class="field">
                 <div class="label">👤 Nombre Completo:</div>
-                <div>${nombre}</div>
+                <div>${nombreClean}</div>
               </div>
               <div class="field">
                 <div class="label">📧 Email de Contacto:</div>
-                <div>${email}</div>
+                <div>${emailClean}</div>
               </div>
               <div class="field">
                 <div class="label">💬 Mensaje:</div>
-                <div>${mensaje}</div>
+                <div>${mensajeClean}</div>
               </div>
               <div class="footer">
                 <p>📅 <strong>Fecha:</strong> ${new Date().toLocaleString('es-ES', { timeZone: 'America/Argentina/Buenos_Aires' })}</p>
@@ -119,7 +139,14 @@ exports.handler = async (event, context) => {
     };
 
     // Enviar el email
+    console.log('Intentando enviar email...');
+    console.log('Variables de entorno:', {
+      EMAIL_USER: !!process.env.EMAIL_USER,
+      EMAIL_PASSWORD: !!process.env.EMAIL_PASSWORD
+    });
+    
     await transporter.sendMail(mailOptions);
+    console.log('Email enviado exitosamente');
 
     // Respuesta exitosa
     return {
@@ -132,13 +159,15 @@ exports.handler = async (event, context) => {
     };
 
   } catch (error) {
-    console.error('Error al enviar email:', error);
+    console.error('Error completo:', error);
+    console.error('Error al enviar email:', error.message);
     
     return {
       statusCode: 500,
       headers,
       body: JSON.stringify({ 
         success: false, 
+        error: 'Error interno del servidor. Por favor, intenta más tarde.',
         message: 'Error interno del servidor. Por favor, intenta más tarde.' 
       })
     };

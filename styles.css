@@ -199,6 +199,43 @@ body {
 /* ============================================
    NAVEGACIÓN
    ============================================ */
+
+/* Estilos específicos para el logo del header */
+.brand {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.brand:hover {
+    transform: scale(1.05);
+}
+
+.brand img {
+    height: 2.5rem; /* h-10 = 40px */
+    width: auto;
+    margin-right: 0.5rem;
+    filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.5));
+    transition: filter 0.3s ease;
+}
+
+.brand:hover img {
+    filter: drop-shadow(0 0 15px rgba(168, 85, 247, 0.8));
+}
+
+/* Responsive: En móviles, hacer el logo un poco más pequeño */
+@media (max-width: 768px) {
+    .brand img {
+        height: 2rem; /* 32px en móviles */
+        margin-right: 0.375rem;
+    }
+    
+    .brand span {
+        font-size: 1.25rem; /* text-xl en móviles */
+    }
+}
+
 header { 
     transition: background-color 0.3s ease; 
 }
@@ -1373,4 +1410,92 @@ header nav a.active {
         rgba(59, 130, 246, 0.4) 0%, 
         rgba(168, 85, 247, 0.3) 50%, 
         rgba(59, 130, 246, 0.4) 100%);
+}
+
+/* ============================================
+   ESTILOS ESPECÍFICOS PARA TEXTO DESTACADO
+   ============================================ */
+
+/* Texto magenta con brillo personalizado y efectos avanzados */
+.text-magenta-gradient {
+    background: linear-gradient(45deg, #D946EF, #F472B6, #EC4899, #D946EF);
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 30px rgba(217, 70, 239, 0.8);
+    filter: drop-shadow(0 0 15px rgba(217, 70, 239, 0.6));
+    animation: gradientShift 3s ease-in-out infinite, textGlow 2s ease-in-out infinite alternate;
+    position: relative;
+    display: inline-block;
+    transform: scale(1.02);
+    transition: transform 0.3s ease;
+}
+
+.text-magenta-gradient:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 25px rgba(217, 70, 239, 0.9));
+}
+
+/* Animación de gradiente deslizante */
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Animación de brillo pulsante */
+@keyframes textGlow {
+    0% { 
+        text-shadow: 0 0 20px rgba(217, 70, 239, 0.6);
+        filter: drop-shadow(0 0 15px rgba(217, 70, 239, 0.6));
+    }
+    100% { 
+        text-shadow: 0 0 40px rgba(217, 70, 239, 1), 0 0 60px rgba(217, 70, 239, 0.8);
+        filter: drop-shadow(0 0 25px rgba(217, 70, 239, 0.9));
+    }
+}
+
+/* Efecto de partículas brillantes */
+.text-magenta-gradient::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    background: radial-gradient(circle at 20% 20%, rgba(217, 70, 239, 0.3) 0%, transparent 70%),
+                radial-gradient(circle at 80% 80%, rgba(244, 114, 182, 0.3) 0%, transparent 70%),
+                radial-gradient(circle at 40% 60%, rgba(236, 72, 153, 0.2) 0%, transparent 70%);
+    opacity: 0;
+    animation: sparkle 4s ease-in-out infinite;
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Animación de partículas */
+@keyframes sparkle {
+    0%, 100% { opacity: 0; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.1); }
+}
+
+/* Fallback para navegadores que no soporten text-fill-color */
+@supports not (-webkit-text-fill-color: transparent) {
+    .text-magenta-gradient {
+        color: #D946EF;
+        text-shadow: 0 0 30px rgba(217, 70, 239, 0.8);
+        animation: textGlow 2s ease-in-out infinite alternate;
+    }
+}
+
+/* Responsive: En móviles, reducir efectos para mejor performance */
+@media (max-width: 768px) {
+    .text-magenta-gradient {
+        animation: textGlow 3s ease-in-out infinite alternate;
+    }
+    
+    .text-magenta-gradient::before {
+        animation: none;
+        opacity: 0;
+    }
 }

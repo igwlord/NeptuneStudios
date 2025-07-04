@@ -9,8 +9,9 @@
     <meta name="description" content="Transformamos tu negocio con IA y automatización. Descubre una nueva forma de pensar tu empresa con Neptune, donde fusionamos tecnología de vanguardia con propósito humano.">
     <meta name="keywords" content="consultoría IA, inteligencia artificial, automatización, estrategia de negocios, transformación digital, machine learning">
 
-    <!-- A.13: Favicon Animado (Simulado con SVG estático para compatibilidad) -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌌</text></svg>">
+    <!-- Favicon optimizado -->
+    <link rel="icon" href="images/favicon.webp" type="image/webp">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌌</text></svg>" type="image/svg+xml">
     
     <!-- Preconnects para optimizar carga -->
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -49,7 +50,10 @@
         <!-- N.1, N.2, N.3, N.4, N.8, N.10: Menú de Navegación Funcional y Mejorado -->
         <header id="main-header" class="fixed top-0 left-0 w-full z-50">
             <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
-                <a href="#inicio" class="font-orbitron text-2xl font-bold text-white brand" aria-label="Neptune - Volver al inicio">NEPTUNE</a>
+                <a href="#inicio" class="brand flex items-center" aria-label="Neptune - Volver al inicio">
+                    <img src="images/favicon.webp" alt="Neptune Logo" class="h-10 w-auto mr-2">
+                    <span class="font-orbitron text-2xl font-bold text-white">NEPTUNE</span>
+                </a>
                 <div class="hidden md:flex items-center space-x-8">
                     <a href="#inicio" class="text-gray-300 hover:text-white">HOME</a>
                     <a href="#nosotros" class="text-gray-300 hover:text-white">QUIÉNES SOMOS</a>
@@ -90,9 +94,13 @@
                 <div class="floating-card glassmorphism rounded-3xl p-8 md:p-12 max-w-4xl mx-auto text-center shadow-2xl shadow-purple-500/10 relative z-10">
                     <h2 class="section-title">Quiénes Somos</h2>
                     <div class="text-lg text-gray-200 leading-relaxed space-y-6 max-w-3xl mx-auto">
-                        <p>En Neptune no creemos en el futuro: lo construimos, a tu medida. Somos una consultora boutique de <span class="keyword-highlight">inteligencia artificial</span> y <span class="keyword-highlight">automatización</span>, pero también mucho más: somos quienes fusionan la precisión de la <span class="keyword-highlight">tecnología</span> con el poder de la <span class="keyword-highlight">pregunta humana</span>.</p>
+                        <p>En Neptune no creemos en el futuro: lo construimos, a tu medida. Somos una consultora de <span class="keyword-highlight">inteligencia artificial</span> y <span class="keyword-highlight">automatización</span>, pero también mucho más: somos quienes fusionan la precisión de la <span class="keyword-highlight">tecnología</span> con el poder de la <span class="keyword-highlight">pregunta humana</span>.</p>
                         
-                        <p>Nuestra fórmula es simple y poderosa: IA de vanguardia, <span class="keyword-highlight">propósito</span> genuino y una <span class="keyword-highlight">estrategia</span> hecha para vos. Durante más de 16 años ayudamos a empresas a evolucionar, transformando la manera en que las personas piensan y trabajan.</p>
+                        <p class="font-orbitron text-2xl text-magenta-gradient pt-4">
+                            Tecnología con alma, resultados con sentido.
+                        </p>
+                        
+                        <p><span class="keyword-highlight">Nuestra fórmula es simple y poderosa:</span> IA de vanguardia, <span class="keyword-highlight">propósito</span> genuino y una <span class="keyword-highlight">estrategia</span> hecha para vos. Durante más de 16 años ayudamos a empresas a evolucionar, transformando la manera en que las personas piensan y trabajan.</p>
                         
                         <div class="py-6">
                             <div class="h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent"></div>
@@ -118,9 +126,19 @@
                             <div class="h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent"></div>
                         </div>
 
-                        <p class="font-orbitron text-2xl text-white pt-4 final-tagline">
-                            Tecnología con alma, resultados con sentido.
-                        </p>
+                        <!-- CTA integrado -->
+                        <div class="bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-2xl p-6 mt-8">
+                            <h3 class="font-orbitron text-xl font-bold text-white mb-3 text-center">¿Listo para la transformación?</h3>
+                            <p class="text-gray-300 mb-6 text-center">Agenda una consulta gratuita de 30 minutos y descubre cómo la IA puede potenciar tu negocio.</p>
+                            <div class="text-center">
+                                <a href="#contacto" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold rounded-full hover:scale-105 transition-transform">
+                                    Consulta Gratuita
+                                    <svg class="w-4 h-4 ml-2" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -241,46 +259,6 @@
                                 <div class="flex items-center justify-center space-x-4 text-sm text-emerald-300">
                                     <span class="flex items-center"><span class="w-2 h-2 bg-emerald-400 rounded-full mr-2"></span>Predicciones precisas</span>
                                     <span class="flex items-center"><span class="w-2 h-2 bg-emerald-400 rounded-full mr-2"></span>Insights accionables</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Sección de valor agregado -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <!-- CTA Principal -->
-                        <div class="glassmorphism rounded-2xl p-8 bg-gradient-to-r from-purple-500/10 to-pink-500/10">
-                            <h3 class="font-orbitron text-xl font-bold text-white mb-4">¿Listo para la transformación?</h3>
-                            <p class="text-gray-300 mb-6">Agenda una consulta gratuita de 30 minutos y descubre cómo la IA puede potenciar tu negocio.</p>
-                            <a href="#contacto" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold rounded-full hover:scale-105 transition-transform">
-                                Consulta Gratuita
-                                <svg class="w-4 h-4 ml-2" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
-                                </svg>
-                            </a>
-                        </div>
-
-                        <!-- Garantías -->
-                        <div class="glassmorphism rounded-2xl p-8 bg-gradient-to-r from-blue-500/10 to-cyan-500/10">
-                            <h3 class="font-orbitron text-xl font-bold text-white mb-4">Nuestras Garantías</h3>
-                            <div class="space-y-3">
-                                <div class="flex items-center text-gray-300">
-                                    <svg class="w-5 h-5 text-green-400 mr-3" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-                                    </svg>
-                                    Resultados medibles en 90 días
-                                </div>
-                                <div class="flex items-center text-gray-300">
-                                    <svg class="w-5 h-5 text-green-400 mr-3" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-                                    </svg>
-                                    Soporte técnico 24/7
-                                </div>
-                                <div class="flex items-center text-gray-300">
-                                    <svg class="w-5 h-5 text-green-400 mr-3" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-                                    </svg>
-                                    ROI mínimo garantizado del 300%
                                 </div>
                             </div>
                         </div>
