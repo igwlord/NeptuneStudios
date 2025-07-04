@@ -1499,3 +1499,14 @@ header nav a.active {
         opacity: 0;
     }
 }
+
+/* Clase para texto destacado consistente con ia-text */
+.highlight-text {
+    color: #D946EF; /* Magenta consistente */
+    font-weight: 700;
+    text-shadow: 
+        0 0 10px rgba(217, 70, 239, 0.6),
+        0 0 20px rgba(217, 70, 239, 0.4),
+        0 0 30px rgba(217, 70, 239, 0.2);
+    animation: iaGlow 2s ease-in-out infinite alternate;
+}
