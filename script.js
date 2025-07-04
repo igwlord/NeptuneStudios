@@ -386,7 +386,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     charCounter.className = 'text-xs text-gray-400';
                 }
                 
-                console.log('Contador actualizado:', currentLength); // Debug
+                // console.log('Contador actualizado:', currentLength); // Debug
             }
             
             // Actualizar contador en tiempo real con múltiples eventos
@@ -400,7 +400,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Inicializar contador
             updateCharCounter();
             
-            console.log('Contador de caracteres inicializado'); // Debug
+            // console.log('Contador de caracteres inicializado'); // Debug
         } else {
             console.error('No se encontraron elementos:', { messageTextarea, charCounter }); // Debug
         }
@@ -645,24 +645,97 @@ function init3DBackground() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
 
-    // MEJORA FASE 1: Estrellas optimizadas según capacidad del dispositivo
+    // MEJORA FASE 2: Sistema de estrellas mejorado con colores y tamaños variables
     const isMobile = window.innerWidth < 768;
     const isLowPerformance = navigator.hardwareConcurrency < 4;
     const starCount = isMobile ? 3000 : (isLowPerformance ? 5000 : 8000);
     
-    const starVertices = [];
-    for (let i = 0; i < starCount; i++) {
-        starVertices.push(
+    // Crear múltiples grupos de estrellas con diferentes colores y tamaños
+    const starGroups = [];
+    
+    // Grupo 1: Estrellas blancas pequeñas (60%)
+    const whiteStarVertices = [];
+    const whiteStarSizes = [];
+    for (let i = 0; i < Math.floor(starCount * 0.6); i++) {
+        whiteStarVertices.push(
             (Math.random() - 0.5) * 2000, 
             (Math.random() - 0.5) * 2000, 
             (Math.random() - 1) * 1000
         );
+        // Tamaños variables entre 0.3 y 0.8
+        whiteStarSizes.push(0.3 + Math.random() * 0.5);
     }
-    const starGeometry = new THREE.BufferGeometry();
-    starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
-    const starMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.7, transparent: true, opacity: 0.8 });
-    stars = new THREE.Points(starGeometry, starMaterial);
-    scene.add(stars);
+    const whiteStarGeometry = new THREE.BufferGeometry();
+    whiteStarGeometry.setAttribute('position', new THREE.Float32BufferAttribute(whiteStarVertices, 3));
+    whiteStarGeometry.setAttribute('size', new THREE.Float32BufferAttribute(whiteStarSizes, 1));
+    const whiteStarMaterial = new THREE.PointsMaterial({ 
+        color: 0xffffff, 
+        size: 0.5,
+        sizeAttenuation: true,
+        transparent: true, 
+        opacity: 0.8,
+        blending: THREE.AdditiveBlending
+    });
+    const whiteStars = new THREE.Points(whiteStarGeometry, whiteStarMaterial);
+    scene.add(whiteStars);
+    starGroups.push(whiteStars);
+    
+    // Grupo 2: Estrellas violetas (25%)
+    const purpleStarVertices = [];
+    const purpleStarSizes = [];
+    for (let i = 0; i < Math.floor(starCount * 0.25); i++) {
+        purpleStarVertices.push(
+            (Math.random() - 0.5) * 2000, 
+            (Math.random() - 0.5) * 2000, 
+            (Math.random() - 1) * 1000
+        );
+        // Tamaños un poco más grandes para destacar
+        purpleStarSizes.push(0.4 + Math.random() * 0.6);
+    }
+    const purpleStarGeometry = new THREE.BufferGeometry();
+    purpleStarGeometry.setAttribute('position', new THREE.Float32BufferAttribute(purpleStarVertices, 3));
+    purpleStarGeometry.setAttribute('size', new THREE.Float32BufferAttribute(purpleStarSizes, 1));
+    const purpleStarMaterial = new THREE.PointsMaterial({ 
+        color: 0xA855F7, // Purple brand color
+        size: 0.6,
+        sizeAttenuation: true,
+        transparent: true, 
+        opacity: 0.7,
+        blending: THREE.AdditiveBlending
+    });
+    const purpleStars = new THREE.Points(purpleStarGeometry, purpleStarMaterial);
+    scene.add(purpleStars);
+    starGroups.push(purpleStars);
+    
+    // Grupo 3: Estrellas magenta (15%)
+    const magentaStarVertices = [];
+    const magentaStarSizes = [];
+    for (let i = 0; i < Math.floor(starCount * 0.15); i++) {
+        magentaStarVertices.push(
+            (Math.random() - 0.5) * 2000, 
+            (Math.random() - 0.5) * 2000, 
+            (Math.random() - 1) * 1000
+        );
+        // Tamaños variados
+        magentaStarSizes.push(0.3 + Math.random() * 0.7);
+    }
+    const magentaStarGeometry = new THREE.BufferGeometry();
+    magentaStarGeometry.setAttribute('position', new THREE.Float32BufferAttribute(magentaStarVertices, 3));
+    magentaStarGeometry.setAttribute('size', new THREE.Float32BufferAttribute(magentaStarSizes, 1));
+    const magentaStarMaterial = new THREE.PointsMaterial({ 
+        color: 0xD946EF, // Magenta brand color
+        size: 0.5,
+        sizeAttenuation: true,
+        transparent: true, 
+        opacity: 0.6,
+        blending: THREE.AdditiveBlending
+    });
+    const magentaStars = new THREE.Points(magentaStarGeometry, magentaStarMaterial);
+    scene.add(magentaStars);
+    starGroups.push(magentaStars);
+    
+    // Guardar referencia para animación
+    stars = { groups: starGroups };
     
     // Átomo de energía para la sección "Quiénes Somos" - DESHABILITADO
     // NOTA: Átomo 3D removido para mejorar performance y eliminar distracción visual
@@ -712,8 +785,19 @@ function animate3D() {
     
     const elapsedTime = clock.getElapsedTime();
     
-    // Animación de estrellas
-    stars.position.z = (elapsedTime * 0.1) % 5;
+    // Animación de grupos de estrellas con velocidades diferentes
+    if (stars && stars.groups) {
+        stars.groups.forEach((starGroup, index) => {
+            // Velocidades diferentes para cada grupo
+            const speed = 0.05 + (index * 0.02); // Velocidades: 0.05, 0.07, 0.09
+            starGroup.position.z = (elapsedTime * speed) % 5;
+            
+            // Rotación sutil para las estrellas de colores
+            if (index > 0) {
+                starGroup.rotation.z = elapsedTime * 0.01 * index;
+            }
+        });
+    }
     
     // Animación del átomo removida - mejor performance
 
@@ -1288,7 +1372,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // initEnhancedQuiz(); // Comentado temporalmente
     // await loadTestimonials(); // Comentado temporalmente
     
-    console.log('Página cargada correctamente');
+    // console.log('Página cargada correctamente');
 });
 
 // Inicializar el fondo 3D cuando el DOM esté listo
