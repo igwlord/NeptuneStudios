@@ -286,7 +286,7 @@ document.addEventListener('DOMContentLoaded', () => {
             quizResult.classList.remove('hidden');
             const finalProfile = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
             const resultsData = {
-                automation: { title: "Tu Oportunidad: Automatización Inteligente", description: "Tu empresa está lista para eliminar tareas repetitivas y optimizar flujos de trabajo. La IA puede ser el motor que impulse tu eficiencia a niveles cósmicos.", cta: "Contácte con un asesor" },
+                automation: { title: "Tu Oportunidad: Automatización Inteligente", description: "Tu empresa está lista para eliminar tareas repetitivas y optimizar flujos de trabajo. Nosotros podemos ayudarte a ser el motor que impulse tu eficiencia a niveles cósmicos.", cta: "Contácte con un asesor" },
                 prediction: { title: "Tu Oportunidad: Visión Predictiva", description: "Posees el potencial de convertir tus datos en informacion clave. <span class=\"ia-text\">Nosotros</span> te podemos ayudar a anticipar tendencias, prever la demanda y tomar decisiones estratégicas con una claridad que te distinga del mercado.", cta: "Contácte con un asesor" },
                 personalization: { title: "Tu Resultado: Conexión a tu medida.", description: "El futuro de tu crecimiento reside en entender a tus clientes a un nivel profundo. <span class=\"ia-text\">Nosotros</span> podemos ayudarte a crear experiencias personalizadas que generen resultados medibles.", cta: "Contácte con un asesor" }
             };
