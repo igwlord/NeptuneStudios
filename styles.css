@@ -1436,305 +1436,158 @@ header nav a.active {
 }
 
 /* ============================================
-   ESTILOS ESPECÍFICOS PARA TEXTO DESTACADO
+   MEJORAS ESPECÍFICAS PARA MÓVILES
    ============================================ */
 
-/* Texto magenta con brillo personalizado y efectos avanzados */
-.text-magenta-gradient {
-    background: linear-gradient(45deg, #D946EF, #F472B6, #EC4899, #D946EF);
-    background-size: 400% 400%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 0 0 30px rgba(217, 70, 239, 0.8);
-    filter: drop-shadow(0 0 15px rgba(217, 70, 239, 0.6));
-    animation: gradientShift 3s ease-in-out infinite, textGlow 2s ease-in-out infinite alternate;
-    position: relative;
-    display: inline-block;
-    transform: scale(1.02);
-    transition: transform 0.3s ease;
-}
-
-.text-magenta-gradient:hover {
-    transform: scale(1.05);
-    filter: drop-shadow(0 0 25px rgba(217, 70, 239, 0.9));
-}
-
-/* Animación de gradiente deslizante */
-@keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-/* Animación de brillo pulsante */
-@keyframes textGlow {
-    0% { 
-        text-shadow: 0 0 20px rgba(217, 70, 239, 0.6);
-        filter: drop-shadow(0 0 15px rgba(217, 70, 239, 0.6));
-    }
-    100% { 
-        text-shadow: 0 0 40px rgba(217, 70, 239, 1), 0 0 60px rgba(217, 70, 239, 0.8);
-        filter: drop-shadow(0 0 25px rgba(217, 70, 239, 0.9));
-    }
-}
-
-/* Efecto de partículas brillantes */
-.text-magenta-gradient::before {
-    content: '';
-    position: absolute;
-    top: -10px;
-    left: -10px;
-    right: -10px;
-    bottom: -10px;
-    background: radial-gradient(circle at 20% 20%, rgba(217, 70, 239, 0.3) 0%, transparent 70%),
-                radial-gradient(circle at 80% 80%, rgba(244, 114, 182, 0.3) 0%, transparent 70%),
-                radial-gradient(circle at 40% 60%, rgba(236, 72, 153, 0.2) 0%, transparent 70%);
-    opacity: 0;
-    animation: sparkle 4s ease-in-out infinite;
-    pointer-events: none;
-    z-index: -1;
-}
-
-/* Animación de partículas */
-@keyframes sparkle {
-    0%, 100% { opacity: 0; transform: scale(0.8); }
-    50% { opacity: 1; transform: scale(1.1); }
-}
-
-/* Fallback para navegadores que no soporten text-fill-color */
-@supports not (-webkit-text-fill-color: transparent) {
-    .text-magenta-gradient {
-        color: #D946EF;
-        text-shadow: 0 0 30px rgba(217, 70, 239, 0.8);
-        animation: textGlow 2s ease-in-out infinite alternate;
-    }
-}
-
-/* Responsive: En móviles, reducir efectos para mejor performance */
+/* Asegurar visibilidad en móviles */
 @media (max-width: 768px) {
-    .text-magenta-gradient {
-        animation: textGlow 3s ease-in-out infinite alternate;
+    /* Formulario de contacto */
+    #contacto .glassmorphism {
+        background: rgba(17, 24, 39, 0.8) !important;
+        backdrop-filter: blur(20px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        margin: 0 1rem;
+        padding: 2rem 1.5rem !important;
+        max-width: calc(100vw - 2rem);
+        box-sizing: border-box;
     }
     
-    .text-magenta-gradient::before {
-        animation: none;
-        opacity: 0;
-    }
-}
-
-/* Clase para texto destacado consistente con ia-text */
-.highlight-text {
-    color: #D946EF; /* Magenta consistente */
-    font-weight: 700;
-    text-shadow: 
-        0 0 10px rgba(217, 70, 239, 0.6),
-        0 0 20px rgba(217, 70, 239, 0.4),
-        0 0 30px rgba(217, 70, 239, 0.2);
-    animation: iaGlow 2s ease-in-out infinite alternate;
-}
-
-/* ===================================
-   PROCESO VISUAL INTERACTIVO 
-   =================================== */
-
-/* Pasos del proceso */
-.process-step {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.8s ease-out;
-}
-
-.process-step.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* Tarjetas del proceso */
-.process-card {
-    position: relative;
-    backdrop-filter: blur(20px);
-    background: rgba(147, 51, 234, 0.1);
-    border: 1px solid rgba(147, 51, 234, 0.2);
-    overflow: hidden;
-}
-
-.process-card::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: conic-gradient(from 0deg at 50% 50%, 
-                               rgba(147, 51, 234, 0.1) 0deg, 
-                               rgba(236, 72, 153, 0.1) 90deg, 
-                               rgba(147, 51, 234, 0.1) 180deg, 
-                               rgba(59, 130, 246, 0.1) 270deg, 
-                               rgba(147, 51, 234, 0.1) 360deg);
-    opacity: 0;
-    transition: opacity 0.5s ease;
-    animation: rotate 8s linear infinite;
-}
-
-.process-card:hover::before {
-    opacity: 1;
-}
-
-@keyframes rotate {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-/* Iconos del proceso */
-.process-icon {
-    width: 64px;
-    height: 64px;
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    position: relative;
-    overflow: hidden;
-}
-
-.process-icon::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transform: rotate(45deg);
-    transition: transform 0.6s ease;
-}
-
-.process-card:hover .process-icon::before {
-    transform: rotate(45deg) translateX(100%);
-}
-
-/* Números de proceso */
-.process-number {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, rgba(147, 51, 234, 0.8), rgba(236, 72, 153, 0.8));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2.5rem;
-    font-weight: 900;
-    color: white;
-    font-family: 'Orbitron', monospace;
-    box-shadow: 
-        0 0 30px rgba(147, 51, 234, 0.5),
-        0 0 60px rgba(147, 51, 234, 0.3);
-    position: relative;
-    z-index: 10;
-    backdrop-filter: blur(10px);
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    transition: all 0.5s ease;
-}
-
-.process-number:hover {
-    transform: scale(1.1);
-    box-shadow: 
-        0 0 40px rgba(147, 51, 234, 0.7),
-        0 0 80px rgba(147, 51, 234, 0.4);
-}
-
-/* Tags del proceso */
-.process-tag {
-    display: inline-block;
-    background: rgba(147, 51, 234, 0.2);
-    color: rgba(147, 51, 234, 1);
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 500;
-    border: 1px solid rgba(147, 51, 234, 0.3);
-    transition: all 0.3s ease;
-}
-
-.process-tag:hover {
-    background: rgba(147, 51, 234, 0.3);
-    color: white;
-    transform: translateY(-2px);
-}
-
-/* Puntos de progreso */
-.progress-dot {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: rgba(147, 51, 234, 0.3);
-    border: 2px solid rgba(147, 51, 234, 0.5);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-}
-
-.progress-dot.active {
-    background: linear-gradient(135deg, #9333EA, #EC4899);
-    border-color: #9333EA;
-    box-shadow: 0 0 20px rgba(147, 51, 234, 0.6);
-}
-
-.progress-dot::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: white;
-    transition: transform 0.3s ease;
-}
-
-.progress-dot.active::before {
-    transform: translate(-50%, -50%) scale(1);
-}
-
-/* Línea de conexión mejorada */
-.process-step:nth-child(odd) .process-card {
-    animation-delay: 0.2s;
-}
-
-.process-step:nth-child(even) .process-card {
-    animation-delay: 0.4s;
-}
-
-/* Efectos hover para toda la sección */
-.process-step:hover .process-number {
-    transform: scale(1.05);
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .process-number {
-        width: 80px;
-        height: 80px;
-        font-size: 1.8rem;
-        margin: 0 auto 20px;
+    /* Asegurar visibilidad de inputs del formulario */
+    .form-input {
+        background-color: rgba(17, 24, 39, 0.9) !important;
+        border: 2px solid rgba(255, 255, 255, 0.2) !important;
+        color: white !important;
+        font-size: 16px; /* Prevenir zoom en iOS */
+        padding: 1rem !important;
+        width: 100% !important;
+        box-sizing: border-box;
     }
     
-    .process-card {
-        margin-bottom: 30px;
+    .form-input:focus {
+        border-color: var(--brand-purple) !important;
+        box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.3) !important;
     }
     
-    .process-icon {
-        width: 56px;
-        height: 56px;
+    .form-label {
+        color: white !important;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+    
+    /* Tarjetas de servicios */
+    .service-card-new {
+        background: rgba(17, 24, 39, 0.8) !important;
+        backdrop-filter: blur(20px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        margin-bottom: 2rem;
+        padding: 2rem 1.5rem !important;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    
+    /* Asegurar que el glassmorphism sea visible */
+    .glassmorphism {
+        background: rgba(17, 24, 39, 0.8) !important;
+        backdrop-filter: blur(20px) !important;
+        -webkit-backdrop-filter: blur(20px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+    
+    /* Container responsive */
+    .container {
+        padding: 0 1rem !important;
+        max-width: 100% !important;
+    }
+    
+    /* Secciones con padding apropiado */
+    section {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+    
+    /* Titles responsive */
+    .section-title {
+        font-size: 2rem !important;
+        margin-bottom: 2rem !important;
+        padding: 0 1rem;
+    }
+    
+    /* Grid responsive para servicios */
+    .grid {
+        display: block !important;
+    }
+    
+    .grid > div {
+        margin-bottom: 2rem;
+    }
+    
+    /* Floating card responsive */
+    .floating-card {
+        margin: 0 1rem !important;
+        padding: 2rem 1.5rem !important;
+        max-width: calc(100vw - 2rem) !important;
+        box-sizing: border-box;
+    }
+    
+    /* Quiz container responsive */
+    #quiz .glassmorphism {
+        margin: 0 1rem !important;
+        padding: 2rem 1.5rem !important;
+        max-width: calc(100vw - 2rem) !important;
+    }
+    
+    /* Testimonios responsive */
+    #testimonios .glassmorphism {
+        margin: 0 1rem !important;
+    }
+    
+    /* Botones responsive */
+    .cta-button {
+        padding: 0.75rem 1.5rem !important;
+        font-size: 1rem !important;
+        width: auto !important;
+        display: inline-block !important;
+    }
+    
+    /* Submit button responsive */
+    .submit-button-gradient {
+        width: 100% !important;
+        padding: 1rem !important;
+        font-size: 1.1rem !important;
+        margin-top: 1rem !important;
+    }
+    
+    /* Character counter */
+    #char-counter {
+        color: rgba(255, 255, 255, 0.6) !important;
+        font-size: 0.875rem !important;
+    }
+    
+    /* Error messages */
+    .error-message {
+        color: #ef4444 !important;
+        font-size: 0.875rem !important;
+        margin-top: 0.5rem !important;
     }
 }
 
-/* Animación de entrada secuencial */
-.process-step:nth-child(1) { animation-delay: 0.1s; }
-.process-step:nth-child(2) { animation-delay: 0.3s; }
-.process-step:nth-child(3) { animation-delay: 0.5s; }
-.process-step:nth-child(4) { animation-delay: 0.7s; }
+/* Mejoras adicionales para pantallas muy pequeñas */
+@media (max-width: 480px) {
+    .form-input {
+        font-size: 16px !important; /* Prevenir zoom automático en iOS */
+    }
+    
+    .glassmorphism {
+        margin: 0 0.5rem !important;
+        padding: 1.5rem 1rem !important;
+    }
+    
+    .section-title {
+        font-size: 1.75rem !important;
+    }
+    
+    .service-card-new {
+        padding: 1.5rem 1rem !important;
+    }
+}
