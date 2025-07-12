@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>En Construcción</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Estilo para el cuerpo de la página */
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: #1a103c; /* Tono azul/púrpura oscuro similar a la imagen */
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* Canvas para el fondo de estrellas */
+        #starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0; /* Detrás del contenido */
+        }
+
+        /* Contenedor principal para centrar el contenido */
+        .container {
+            text-align: center;
+            padding: 2rem;
+            position: relative; /* Para que esté por encima del canvas */
+            z-index: 1;
+            width: 90%;
+            max-width: 800px; /* Ancho máximo para el texto */
+        }
+
+        .neon-title {
+            font-family: 'Orbitron', 'Space Grotesk', Arial, sans-serif;
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: #39FF14;
+            text-shadow:
+                0 0 8px #39FF14,
+                0 0 20px #39FF14,
+                0 0 40px #fff,
+                0 0 60px #39FF14;
+            margin-bottom: 1.5rem;
+            letter-spacing: 2px;
+        }
+        }
+
+        /* Estilo para el texto principal */
+        #typewriter {
+            font-size: 1.5rem; /* Tamaño de fuente reducido para móviles */
+            font-weight: 500;
+            white-space: pre-wrap; /* Permite el salto de línea */
+            height: 10rem; /* Altura FIJA para estabilizar el layout */
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.5); /* Sutil brillo para el texto */
+            display: inline-block;
+            vertical-align: top; /* Alinea el texto en la parte superior del contenedor */
+        }
+
+        /* Pseudo-elemento para el cursor personalizado */
+        #typewriter::after {
+            content: '';
+            display: inline-block;
+            width: 3px;
+            height: 1.1em; /* Altura relativa al tamaño de la fuente */
+            background-color: white;
+            margin-left: 6px; /* Espacio entre el texto y el cursor */
+            vertical-align: baseline; /* Alinea el cursor con la base del texto */
+            animation: blink-caret .75s step-end infinite;
+        }
+
+        /* Estilo para el botón "volver" */
+        .back-button {
+            position: fixed; /* Posición fija en la pantalla */
+            bottom: 30%; /* Más cerca del texto principal */
+            left: 50%; /* Centrado horizontalmente */
+            transform: translateX(-50%); /* Ajuste fino para el centrado */
+            z-index: 2; /* Asegura que esté por encima de otros elementos */
+            padding: 0.75rem 2rem;
+            font-size: 1rem;
+            font-weight: 700;
+            color: white;
+            background-color: #8a3ffc; /* Tono violeta similar a la referencia */
+            border: none;
+            border-radius: 9999px; /* Botón completamente redondeado */
+            text-decoration: none;
+            text-transform: lowercase;
+            transition: background-color 0.3s, transform 0.3s;
+            box-shadow: 0 4px 15px rgba(138, 63, 252, 0.4);
+        }
+
+        .back-button:hover {
+            background-color: #7b2bfb; /* Color ligeramente más oscuro al pasar el mouse */
+            transform: translateX(-50%) scale(1.05); /* Efecto de crecimiento sutil */
+        }
+
+        /* Media query para pantallas más grandes */
+        @media (min-width: 768px) {
+            #typewriter {
+                font-size: 2.25rem; /* Tamaño de fuente reducido para escritorio */
+                height: 8rem; /* Altura FIJA para estabilizar el layout */
+            }
+        }
+
+        /* Animación para el cursor parpadeante (actualizada) */
+        @keyframes blink-caret {
+            from, to { background-color: transparent }
+            50% { background-color: white; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Canvas para el efecto de estrellas -->
+    <canvas id="starfield"></canvas>
+
+    <div class="container">
+        <div class="neon-title">Orion</div>
+        <!-- Elemento donde se mostrará el texto con efecto de máquina de escribir -->
+        <h1 id="typewriter"></h1>
+    </div>
+    
+    <!-- Botón para volver (fuera del contenedor principal para un posicionamiento más fácil) -->
+    <a href="https://neptunestudios.netlify.app/" class="back-button">volver</a>
+
+    <script>
+        // --- Lógica del efecto de máquina de escribir (mejorada) ---
+        const typewriterElement = document.getElementById('typewriter');
+        const texts = [
+            "¡Alerta estelar! Estamos construyendo esta galaxia. Vuelve en otra línea de tiempo 🚀",
+            "Galaxia en obras cósmicas. Estamos construyendo esta galaxia. Regresa en otra dimensión temporal ✨",
+            "Pausa intergaláctica: estamos armando esta galaxia. Vuelve en otra línea de tiempo 😉",
+            "Ups… Andamios siderales en marcha. Estamos construyendo esta galaxia. Prueba suerte en otro universo temporal ⭐",
+            "Mantenimiento cuántico activado. Estamos construyendo esta galaxia. Reencuéntranos en otra línea de tiempo."
+        ];
+        let textIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const typingSpeed = 70;
+        const deletingSpeed = 40;
+        const delayBetweenTexts = 2000; // Pausa de 2 segundos antes de borrar
+
+        function typeLoop() {
+            const currentText = texts[textIndex];
+            // Lógica para escribir
+            if (!isDeleting && charIndex < currentText.length) {
+                typewriterElement.innerHTML = currentText.substring(0, charIndex + 1);
+                charIndex++;
+                setTimeout(typeLoop, typingSpeed);
+            } 
+            // Lógica para borrar
+            else if (isDeleting && charIndex > 0) {
+                typewriterElement.innerHTML = currentText.substring(0, charIndex - 1);
+                charIndex--;
+                setTimeout(typeLoop, deletingSpeed);
+            } 
+            // Cambiar a borrar después de terminar de escribir
+            else if (!isDeleting && charIndex === currentText.length) {
+                isDeleting = true;
+                setTimeout(typeLoop, delayBetweenTexts);
+            } 
+            // Cambiar a escribir la siguiente frase después de borrar
+            else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                textIndex = (textIndex + 1) % texts.length; // Va a la siguiente frase, o vuelve al inicio
+                setTimeout(typeLoop, 500); // Pequeña pausa antes de empezar la siguiente
+            }
+        }
+
+        // --- Lógica del efecto de fondo de estrellas ---
+        const canvas = document.getElementById('starfield');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const stars = [];
+        const numStars = 300; // Número de estrellas
+
+        for (let j = 0; j < numStars; j++) {
+            stars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 1.5 + 0.5,
+                alpha: Math.random(),
+                delta: Math.random() * 0.02 - 0.01
+            });
+        }
+
+        function drawStars() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "white";
+            stars.forEach(star => {
+                star.alpha += star.delta;
+                if (star.alpha <= 0 || star.alpha >= 1) {
+                    star.delta = -star.delta;
+                }
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                ctx.globalAlpha = star.alpha;
+                ctx.fill();
+            });
+            requestAnimationFrame(drawStars);
+        }
+
+        // Inicia los efectos cuando la ventana se ha cargado completamente
+        window.onload = function() {
+            typeLoop();
+            drawStars();
+        };
+    </script>
+
+    <!-- Footer con redes sociales y textos -->
+    <footer class="fixed bottom-0 left-0 w-full py-4 flex flex-col items-center justify-center bg-transparent z-10">
+        <!-- Redes Sociales en el Footer -->
+        <div class="w-full flex justify-center items-center mb-2">
+            <div class="flex gap-6">
+                <a href="https://www.instagram.com/neptunestudios.ia/" target="_blank" rel="noopener" aria-label="Instagram Neptune Studios" class="group">
+                    <svg class="w-6 h-6 text-pink-500 group-hover:text-pink-400 transition" fill="currentColor" viewBox="0 0 24 24"><path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5A4.25 4.25 0 0 0 20.5 16.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zm4.25 3.25a5.25 5.25 0 1 1 0 10.5a5.25 5.25 0 0 1 0-10.5zm0 1.5a3.75 3.75 0 1 0 0 7.5a3.75 3.75 0 0 0 0-7.5zm5.25.75a1 1 0 1 1-2 0a1 1 0 0 1 2 0z"/></svg>
+                </a>
+                <a href="https://x.com/NeptuneStudioia" target="_blank" rel="noopener" aria-label="X (Twitter) Neptune Studios" class="group">
+                    <svg class="w-6 h-6 text-gray-400 group-hover:text-white transition" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                </a>
+            </div>
+        </div>
+        <!-- Texto de derechos reservados -->
+        <div class="w-full flex flex-col items-center justify-center">
+            <span class="block text-center text-purple-200 text-xs font-semibold mb-1">© 2025 NEPTUNE Studios. Todos los derechos reservados.</span>
+            <div class="text-center text-gray-400 text-xs">
+                <a href="politica-privacidad.html" class="hover:text-purple-400">Política de Privacidad</a> |
+                <a href="terminos-servicio.html" class="hover:text-purple-400">Términos de Servicio</a>
+            </div>
+        </div>
+    </footer>
+    
+
+</body>
+</html>
