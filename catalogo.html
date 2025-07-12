@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Apps | Neptune Studios</title>
+    <link rel="icon" href="images/favicon.webp" type="image/webp">
+    <link rel="stylesheet" href="styles.css">
+    <!-- Tailwind CDN for rapid prototyping (replace with production build for deployment) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Three.js para fondo animado -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            font-family: 'Inter', 'Orbitron', Arial, sans-serif;
+        }
+        .glassmorphism {
+            background: rgba(30, 41, 59, 0.7);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+            backdrop-filter: blur(8px);
+            border-radius: 1.5rem;
+            border: 1px solid rgba(168, 85, 247, 0.15);
+        }
+        .app-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .app-card:hover {
+            transform: translateY(-6px) scale(1.03);
+            box-shadow: 0 8px 32px 0 rgba(168, 85, 247, 0.25);
+            border-color: #a855f7;
+        }
+        #bg-canvas {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="relative overflow-x-hidden">
+    <canvas id="bg-canvas"></canvas>
+    <!-- HOME button for mobile, top right, glassmorphism style -->
+    <a href="index.html" class="fixed top-3 right-3 z-50 md:hidden flex items-center justify-center w-10 h-10 bg-white/10 backdrop-blur-md border border-purple-400/40 rounded-xl shadow-xl hover:scale-110 transition-all duration-300" style="box-shadow:0 4px 16px rgba(168,85,247,0.18);" aria-label="Ir a Home">
+        <!-- Icono de casa moderno y minimalista -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-purple-400" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 3.172l7 6.364V19a2 2 0 01-2 2h-3v-5H10v5H7a2 2 0 01-2-2V9.536l7-6.364zm0-2.172a1 1 0 01.707.293l8 7.273A1 1 0 0120 9.536V19a4 4 0 01-4 4h-3v-5a1 1 0 00-2 0v5H7a4 4 0 01-4-4V9.536a1 1 0 01-.293-.707l8-7.273A1 1 0 0112 1z"/>
+        </svg>
+    </a>
+    <header class="w-full py-6 px-4 md:px-12 flex items-center justify-between z-10 relative">
+        <a href="index.html" class="font-orbitron text-2xl md:text-3xl font-bold text-white tracking-widest">NEPTUNE</a>
+        <nav class="hidden md:flex gap-8">
+            <a href="index.html" class="text-gray-300 hover:text-white transition">Inicio</a>
+            <a href="#" class="text-purple-400 font-semibold">Catálogo de Apps</a>
+        </nav>
+    </header>
+    <main class="relative z-10 flex flex-col items-center justify-center min-h-screen pt-12 pb-24 px-4">
+        <h1 class="font-orbitron text-4xl md:text-5xl font-bold text-white mb-4 text-center drop-shadow-lg">Nuestras Aplicaciones</h1>
+        <p class="text-lg text-gray-300 mb-12 text-center max-w-2xl">Explora nuestro catálogo de web apps diseñadas para transformar tu vida, tu negocio o solo divertirte. Cada app refleja innovación, seguridad y eficiencia, impulsadas por la visión de Neptune Studios. <span class="font-bold" style="color:#39FF14;text-shadow:0 0 10px #39FF14,0 0 20px #fff;">TOTALMENTE GRATIS</span></p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-6xl">
+            <!-- App 1 -->
+            <div class="app-card glassmorphism p-8 flex flex-col items-center border border-gray-700">
+                <div class="w-20 h-20 mb-4 flex items-center justify-center rounded-full bg-gradient-to-br from-purple-600 to-pink-500 shadow-lg">
+                    <img src="images/nebula.webp" alt="Nebula Financial Icon" class="w-16 h-16 object-contain" loading="lazy">
+                </div>
+                <h2 class="font-orbitron text-2xl mb-2" style="color:#39FF14;text-shadow:0 0 10px #39FF14,0 0 20px #fff;">Nebula</h2>
+                <p class="text-gray-300 mb-4 text-center">Plataforma financiera inteligente para gestión de finanzas, control de gastos e inversiones. Seguridad y control total en la nube.</p>
+                <a href="https://nebula-v3.netlify.app" target="_blank" rel="noopener" class="mt-auto px-6 py-2 bg-purple-600 text-white rounded-full font-semibold shadow hover:bg-purple-700 transition">Ver más</a>
+            </div>
+            <!-- App 2 -->
+            <div class="app-card glassmorphism p-8 flex flex-col items-center border border-gray-700">
+                <div class="w-20 h-20 mb-4 flex items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-purple-500 shadow-lg">
+                    <img src="images/orion.webp" alt="Orion Icon" class="w-16 h-16 object-contain" loading="lazy">
+                </div>
+                <h2 class="font-orbitron text-2xl mb-2" style="color:#39FF14;text-shadow:0 0 10px #39FF14,0 0 20px #fff;">Orion</h2>
+                <p class="text-gray-300 mb-4 text-center">Suite de productividad  con IA,  flujos inteligentes de tareas y proyectos para tu vida personal o para tu empresa. Implementamos metodos de ultima generacion.</p>
+                <a href="https://orion.netlify.app" target="_blank" rel="noopener" class="mt-auto px-6 py-2 bg-blue-600 text-white rounded-full font-semibold shadow hover:bg-blue-700 transition">Ver más</a>
+            </div>
+            <!-- App 3 -->
+            <div class="app-card glassmorphism p-8 flex flex-col items-center border border-gray-700">
+                <div class="w-20 h-20 mb-4 flex items-center justify-center rounded-full bg-gradient-to-br from-pink-600 to-purple-400 shadow-lg">
+                    <img src="images/pleyades.webp" alt="Pleyades Icon" class="w-16 h-16 object-contain" loading="lazy">
+                </div>
+                <h2 class="font-orbitron text-2xl mb-2" style="color:#39FF14;text-shadow:0 0 10px #39FF14,0 0 20px #fff;">Pleyades</h2>
+                <p class="text-gray-300 mb-4 text-center">Portal de informacion y visualización avanzada. Convierte información compleja en insights claros y accionables para tu vida personal. Transforma tu realidad con contenido simple, claro y efectivo.</p>
+                <a href="https://pleyades.netlify.app" target="_blank" rel="noopener" class="mt-auto px-6 py-2 bg-blue-600 text-white rounded-full font-semibold shadow hover:bg-blue-700 transition">Ver más</a>
+            </div>
+        </div>
+    </main>
+    <footer class="w-full py-8 px-4 md:px-12 flex flex-col md:flex-row items-center justify-between text-gray-400 text-sm z-10 relative">
+        <span>&copy; 2025 Neptune Studios. Todos los derechos reservados.</span>
+        <span>Hecho con <span class="text-pink-500">&#10084;</span> en la galaxia</span>
+    </footer>
+    <script src="script_production.js"></script>
+    <script>
+        // Inicializar fondo 3D si existe la función
+        if (typeof init3DBackground === 'function' && typeof animate3D === 'function') {
+            init3DBackground();
+            animate3D();
+        } else {
+            // Esperar a que cargue el script principal
+            window.addEventListener('DOMContentLoaded', function() {
+                if (typeof init3DBackground === 'function' && typeof animate3D === 'function') {
+                    init3DBackground();
+                    animate3D();
+                }
+            });
+        }
+    </script>
+</body>
+</html>

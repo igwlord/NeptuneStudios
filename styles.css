@@ -362,6 +362,15 @@ header nav a.active {
     margin-top: 2rem !important;
 }
 
+/* Neon Magenta for typewriter IA text */
+.ia-text {
+    color: #D946EF;
+    text-shadow: 0 0 8px #D946EF, 0 0 16px #fff0fa;
+    font-weight: bold;
+    letter-spacing: 1px;
+    transition: color 0.3s, text-shadow 0.3s;
+}
+
 /* ============================================
    FIN LAYOUT VERTICAL FORZADO
    ============================================ */
@@ -1132,8 +1141,8 @@ header nav a.active {
     margin: 1.5rem auto 0 auto;
     padding: 0 2rem;
     opacity: 1;
-    color: #22D3EE; /* Verde azulado claro legible */
-    text-shadow: 0 0 10px rgba(34, 211, 238, 0.3);
+    color: #39FF14; /* Verde neon */
+    text-shadow: 0 0 10px #39FF14, 0 0 20px #fff;
     line-height: 1.4;
     letter-spacing: 0.5px;
     max-width: 800px;

@@ -2,16 +2,12 @@
 // NEPTUNE LANDING PAGE - JAVASCRIPT PRINCIPAL
 // Fase 2: Código JavaScript separado en archivo externo
 // ============================================
-
 import * as THREE from 'three';
-
 document.addEventListener('DOMContentLoaded', () => {
-
     // --- 1. INICIALIZACIÓN Y PRELOADER CON ANIMACIÓN SECUENCIAL ---
     const name = "NEPTUNE";
     const preloader = document.getElementById('preloader');
     const preloaderTitle = document.getElementById('preloader-title');
-    
     // Crear primera animación del preloader
     name.split('').forEach((char, index) => {
         const span = document.createElement('span');
@@ -20,49 +16,40 @@ document.addEventListener('DOMContentLoaded', () => {
         span.style.animationDelay = `${index * 0.1}s`;
         preloaderTitle.appendChild(span);
     });
-
     // Secuencia de animación: Preloader -> Fade Out -> Título Principal -> Slogan -> Botón
     setTimeout(() => {
         startMainTitleSequence();
     }, 1000); // MUY RÁPIDO: Solo 1 segundo de preloader
-
     function startMainTitleSequence() {
         // 1. Ocultar preloader con fade out SUPER rápido
         preloader.style.transition = 'opacity 0.3s ease-out';
         preloader.style.opacity = '0';
-        
         setTimeout(() => {
             preloader.style.display = 'none';
             document.querySelector('.main-content').classList.add('visible');
-            
             // 2. Mostrar título principal "NEPTUNE" INMEDIATAMENTE
             setTimeout(() => {
                 showMainTitle();
             }, 100); // Solo 0.1s para el título
-            
             // 3. Mostrar slogan a los 0.3s
             setTimeout(() => {
                 showTypwriterSlogan();
             }, 300); // 0.3s para el slogan
-            
             // 4. Mostrar botón a los 0.5s
             setTimeout(() => {
                 showCTAButton();
             }, 500); // 0.5s para el botón
         }, 300);
     }
-
     function showMainTitle() {
         const heroSection = document.querySelector('.hero-section');
         const titleContainer = document.getElementById('neptune-title');
-        
         // Limpiar el contenido anterior
         titleContainer.innerHTML = '';
         titleContainer.style.opacity = '0';
         titleContainer.style.display = 'block';
         titleContainer.style.textAlign = 'center';
         titleContainer.style.width = '100%';
-        
         // Crear spans para cada letra con animación rápida
         name.split('').forEach((char, index) => {
             const span = document.createElement('span');
@@ -71,42 +58,34 @@ document.addEventListener('DOMContentLoaded', () => {
             span.style.animationDelay = `${index * 0.03}s`; // Animación MUY rápida
             titleContainer.appendChild(span);
         });
-        
         // Mostrar el título con fade in MUY rápido
         setTimeout(() => {
             titleContainer.style.transition = 'opacity 0.2s ease-in';
             titleContainer.style.opacity = '1';
         }, 20);
     }
-
     function showTypwriterSlogan() {
         let sloganElement = document.getElementById('hero-slogan');
-        
         if (!sloganElement) {
             // Crear el elemento del slogan si no existe
             const heroSection = document.querySelector('.hero-section');
             const sloganDiv = document.createElement('div');
             sloganDiv.id = 'hero-slogan';
             sloganDiv.className = 'hero-slogan typewriter-slogan';
-            
             // Insertar después del título y antes del botón
             const titleContainer = document.getElementById('neptune-title');
             const ctaButton = document.querySelector('.cta-button');
             heroSection.insertBefore(sloganDiv, ctaButton);
             sloganElement = sloganDiv;
         }
-        
         // Texto del slogan con HTML para las etiquetas
         const sloganText = "Consultor IA, una nueva forma de pensar tu negocio.";
         const sloganTextWithHTML = 'Consultor <span class="ia-text">IA</span>, una nueva forma de pensar tu <span class="ia-text">negocio</span>.';
-        
         let i = 0;
         sloganElement.innerHTML = '';
         sloganElement.style.opacity = '1';
-        
         // Agregar cursor parpadeante
         sloganElement.classList.add('typewriter-cursor');
-        
         function typeWriter() {
             if (i < sloganText.length) {
                 // Manejar la palabra "IA" especialmente
@@ -128,25 +107,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 sloganElement.classList.remove('typewriter-cursor');
             }
         }
-        
         // Iniciar efecto de máquina de escribir inmediatamente
         typeWriter();
     }
-
     function showCTAButton() {
         const ctaButton = document.querySelector('.hero-section .cta-button, .hero-section .bg-gradient-to-r');
-        
         if (ctaButton) {
             ctaButton.style.opacity = '0';
             ctaButton.style.transform = 'translateY(15px)';
             ctaButton.style.transition = 'all 0.6s ease-out';
             ctaButton.style.display = 'block';
-            
             // Mostrar botón inmediatamente
             setTimeout(() => {
                 ctaButton.style.opacity = '1';
                 ctaButton.style.transform = 'translateY(0)';
-                
                 // Inicializar el resto de funcionalidades después de un breve delay
                 setTimeout(() => {
                     initPageFunctionality();
@@ -157,7 +131,6 @@ document.addEventListener('DOMContentLoaded', () => {
             initPageFunctionality();
         }
     }
-
     // --- 2. FUNCIÓN DE INICIALIZACIÓN PRINCIPAL ---
     function initPageFunctionality() {
         initHomePageAnimations();
@@ -168,25 +141,21 @@ document.addEventListener('DOMContentLoaded', () => {
         initContactForm();
         initScrollBehavior();
         initProcessSection();
-        
         // Inicializar fondo 3D si está disponible
         if (typeof init3DBackground === 'function') {
             init3DBackground();
             animate3D();
         }
     }
-
     // --- 3. ANIMACIONES DE LA PÁGINA PRINCIPAL ---
     function initHomePageAnimations() {
         // Las animaciones del título principal ya se manejan en la secuencia inicial
         // Solo inicializar otras animaciones si es necesario
-        
         // Inicializar animaciones de partículas si están presentes
         if (typeof initParticles === 'function') {
             initParticles();
         }
     }
-
     // --- 4. NAVEGACIÓN (MENÚ MÓVIL Y ESTADO ACTIVO) ---
     function initNavigation() {
         const header = document.getElementById('main-header');
@@ -195,14 +164,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const openIcon = document.getElementById('menu-open-icon');
         const closeIcon = document.getElementById('menu-close-icon');
         const navLinks = document.querySelectorAll('header nav a, #mobile-menu a');
-
         mobileMenuButton.addEventListener('click', () => {
             const isExpanded = mobileMenu.classList.toggle('hidden');
             mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
             openIcon.classList.toggle('hidden');
             closeIcon.classList.toggle('hidden');
         });
-        
         navLinks.forEach(link => {
             link.addEventListener('click', () => {
                 if (!mobileMenu.classList.contains('hidden')) {
@@ -213,7 +180,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         });
-
         const sections = document.querySelectorAll('section');
         const desktopNavLinks = document.querySelectorAll('header nav a:not(.brand)');
         const observer = new IntersectionObserver((entries) => {
@@ -225,14 +191,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         }, { rootMargin: "-50% 0px -50% 0px" });
-
         sections.forEach(section => observer.observe(section));
-        
         window.addEventListener('scroll', () => {
             header.classList.toggle('scrolled', window.scrollY > 50);
         });
     }
-    
     // --- 5. LÓGICA DEL MICRO-QUIZ ---
     function initQuiz() {
         const startBtn = document.getElementById('start-quiz-btn');
@@ -241,7 +204,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const quizResult = document.getElementById('quiz-result');
         const progressBar = document.getElementById('progress-bar-inner');
         const questionContent = document.getElementById('quiz-question-content');
-
         const questions = [
             { question: "¿Cuál es el mayor desafío actual en tu negocio?", answers: [{ text: "Procesos manuales y repetitivos", profile: "automation" }, { text: "Dificultad para prever la demanda", profile: "prediction" }, { text: "Falta de personalización para clientes", profile: "personalization" }] },
             { question: "¿Qué tipo de datos genera tu negocio en mayor volumen?", answers: [{ text: "Interacciones de clientes y ventas", profile: "personalization" }, { text: "Datos de producción y logística", profile: "automation" }, { text: "Tendencias de mercado y competidores", profile: "prediction" }] },
@@ -249,13 +211,11 @@ document.addEventListener('DOMContentLoaded', () => {
         ];
         let currentQuestionIndex = 0;
         let scores = { automation: 0, prediction: 0, personalization: 0 };
-
         startBtn.addEventListener('click', () => {
             quizStart.classList.add('hidden');
             quizQuestions.classList.remove('hidden');
             displayQuestion();
         });
-
         function displayQuestion() {
             const q = questions[currentQuestionIndex];
             questionContent.innerHTML = `
@@ -267,7 +227,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
             progressBar.style.width = `${((currentQuestionIndex) / questions.length) * 100}%`;
-            
             document.querySelectorAll('.quiz-option').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     scores[e.target.dataset.profile]++;
@@ -281,7 +240,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             });
         }
-
         function showResult() {
             quizQuestions.classList.add('hidden');
             quizResult.classList.remove('hidden');
@@ -299,7 +257,6 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
         }
     }
-
     // --- 6. LÓGICA DEL ACCORDION ---
     function initAccordion() {
         const accordionData = [
@@ -309,12 +266,10 @@ document.addEventListener('DOMContentLoaded', () => {
             { title: "Evolución Continua", content: "El viaje no termina con el lanzamiento. Monitoreamos, optimizamos y evolucionamos continuamente tu ecosistema de IA para asegurar que siempre estés a la vanguardia." }
         ];
         const accordionContainer = document.getElementById('accordion-container');
-        
         // Verificar si el elemento existe antes de continuar
         if (!accordionContainer) {
             return;
         }
-        
         accordionContainer.innerHTML = accordionData.map((item, index) => `
             <div class="glassmorphism rounded-lg">
                 <h2>
@@ -328,7 +283,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             </div>
         `).join('');
-        
         document.querySelectorAll('.accordion-button').forEach(button => {
             const content = button.closest('h2').nextElementSibling;
             if(button.getAttribute('aria-expanded') === 'true') {
@@ -338,11 +292,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const isExpanded = button.getAttribute('aria-expanded') === 'true';
                 button.setAttribute('aria-expanded', !isExpanded);
                 content.style.maxHeight = !isExpanded ? content.scrollHeight + 'px' : '0px';
-            });        });
-
-        // Acordeón inicializado
+            });
+        });
     }
-
     // --- 7. LÓGICA DE TESTIMONIOS ---
     function initTestimonials() {
         const testimonials = [
@@ -355,10 +307,6 @@ document.addEventListener('DOMContentLoaded', () => {
             { name: "Jefa de Innovación en Nebula", text: "Un verdadero socio estratégico. Su visión va más allá del código, entienden el núcleo del negocio.", rating: 5 },
         ];
         const slider = document.querySelector('.testimonial-slider');
-        if (!slider) {
-            console.warn('No se encontró el contenedor .testimonial-slider');
-            return;
-        }
         const allTestimonials = [...testimonials, ...testimonials];
         slider.innerHTML = allTestimonials.map(t => `
             <div class="testimonial-card">
@@ -368,7 +316,6 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `).join('');
     }
-
     // --- 8. FORMULARIO DE CONTACTO FUNCIONAL ---
     function initContactForm() {
         const form = document.getElementById('contact-form');
@@ -376,46 +323,34 @@ document.addEventListener('DOMContentLoaded', () => {
         const submitButton = document.getElementById('submit-button');
         const messageTextarea = document.getElementById('message');
         const charCounter = document.getElementById('char-counter');
-
         if (!form) return;
-        
         // FUNCIÓN GLOBAL PARA BYPASS DE RATE LIMITING (TESTING)
         window.bypassRateLimit = function() {
             localStorage.clear(); // Limpiar todo el localStorage
             sessionStorage.clear(); // Limpiar todo el sessionStorage
             return 'Rate limiting deshabilitado para testing';
         };
-        
         // FUNCIÓN GLOBAL PARA ACTIVAR MODO TESTING
         window.activarModoTesting = function() {
             window.TESTING_MODE = true;
-            console.log('🧪 El formulario simulará envío exitoso sin usar backend');
             return 'Modo testing activado - formulario will simulate success';
         };
-        
         window.desactivarModoTesting = function() {
             window.TESTING_MODE = false;
-            console.log('� MODO TESTING DESACTIVADO');
-            console.log('🔧 El formulario usará el backend real');
             return 'Modo testing desactivado - formulario will use real backend';
         };
-        
         console.log('�💡 Para deshabilitar rate limiting, ejecuta: bypassRateLimit()');
         console.log('🧪 Para activar modo testing, ejecuta: activarModoTesting()');
         console.log('🔧 Para desactivar modo testing, ejecuta: desactivarModoTesting()');
-
         // Inicializar contador de caracteres
         if (messageTextarea && charCounter) {
             const maxLength = 1000;
-            
             // Función para actualizar contador (versión mejorada y segura)
             const safeUpdateCharCounter = () => {
                 try {
                     const currentLength = messageTextarea.value.length;
                     const remaining = maxLength - currentLength;
-                    
                     charCounter.textContent = `${currentLength}/${maxLength} caracteres`;
-                    
                     // Cambiar color según proximidad al límite
                     if (remaining <= 50) {
                         charCounter.className = 'text-xs text-red-400 font-semibold';
@@ -428,10 +363,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     console.error('Error actualizando contador:', error);
                 }
             };
-            
             // Hacer la función global para acceso seguro
             window.safeUpdateCharCounter = safeUpdateCharCounter;
-            
             // Actualizar contador en tiempo real con múltiples eventos
             messageTextarea.addEventListener('input', safeUpdateCharCounter);
             messageTextarea.addEventListener('keyup', safeUpdateCharCounter);
@@ -439,32 +372,24 @@ document.addEventListener('DOMContentLoaded', () => {
             messageTextarea.addEventListener('paste', () => {
                 setTimeout(safeUpdateCharCounter, 10); // Esperar a que se procese el paste
             });
-            
             // Inicializar contador
             safeUpdateCharCounter();
-            
-            // console.log('Contador de caracteres inicializado'); // Debug
+            // 
         } else {
             console.error('No se encontraron elementos:', { messageTextarea, charCounter }); // Debug
         }
-
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
-            
             // BYPASS RATE LIMITING PARA TESTING
             // Limpiar localStorage de rate limiting si existe
             if (localStorage.getItem('contactFormSubmissions')) {
                 localStorage.removeItem('contactFormSubmissions');
-                console.log('Rate limiting bypasseado para testing');
             }
-            
             if (!validateForm()) return;
-            
             // UI feedback - estado de envío
             submitButton.disabled = true;
             submitButton.textContent = 'Enviando mensaje...';
             submitButton.classList.add('opacity-50');
-            
             try {
                 // Obtener datos del formulario
                 const formData = {
@@ -472,36 +397,23 @@ document.addEventListener('DOMContentLoaded', () => {
                     email: document.getElementById('email').value.trim(),
                     mensaje: document.getElementById('message').value.trim()
                 };
-                
-                console.log('Datos del formulario:', formData); // Debug
-
                 // Detectar si estamos en Netlify o desarrollo local
                 const apiUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
                     ? '/api/contact/send' 
                     : '/.netlify/functions/contact';
-                    
-                console.log('URL de API que se usará:', apiUrl);
-                console.log('Hostname actual:', window.location.hostname);
-                
                 // MODO DE TESTING: Simular respuesta exitosa 
                 if ((window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') || window.TESTING_MODE) {
-                    console.log('🧪 MODO TESTING ACTIVADO - Simulando envío exitoso');
-                    console.log('📧 Datos que se enviarían:', formData);
-                    
                     // Simular delay de red
                     await new Promise(resolve => setTimeout(resolve, 1500));
-                    
                     // Simular respuesta exitosa
                     showSuccessMessage('¡Mensaje enviado exitosamente! (Modo testing - formulario funcionando correctamente)');
                     form.reset();
-                    
                     // Actualizar contador usando función segura
                     if (window.safeUpdateCharCounter) {
                         setTimeout(window.safeUpdateCharCounter, 100);
                     }
                     return;
                 }
-
                 // Enviar al backend
                 const response = await fetch(apiUrl, {
                     method: 'POST',
@@ -510,16 +422,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     },
                     body: JSON.stringify(formData)
                 });
-
                 const result = await response.json();
-                
-                console.log('Respuesta del servidor:', result); // Debug
-
                 if (result.success) {
                     // Éxito - mostrar mensaje y limpiar formulario
                     showSuccessMessage(result.message);
                     form.reset();
-                    
                     // Actualizar contador usando función segura
                     if (window.safeUpdateCharCounter) {
                         setTimeout(window.safeUpdateCharCounter, 100);
@@ -528,7 +435,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Error del servidor
                     showErrorMessage(result.error || result.message || 'Error enviando el mensaje');
                 }
-
             } catch (error) {
                 console.error('Error enviando formulario:', error);
                 showErrorMessage('Error de conexión. Por favor, inténtalo de nuevo.');
@@ -539,23 +445,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 submitButton.classList.remove('opacity-50');
             }
         });
-        
         function validateForm() {
             let isValid = true;
             const inputs = form.querySelectorAll('[required]');
-            
-            console.log('Validando formulario...'); // Debug
-            
             inputs.forEach(input => {
                 const value = input.value.trim();
-                console.log(`Campo ${input.name || input.id}: "${value}"`); // Debug
-                
                 if (!value) {
                     showFieldError(input, 'Este campo es obligatorio.');
                     isValid = false;
                     return;
                 }
-                
                 if (input.type === 'email') {
                     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                     if (!emailRegex.test(value)) {
@@ -564,44 +463,34 @@ document.addEventListener('DOMContentLoaded', () => {
                         return;
                     }
                 }
-                
                 if (input.name === 'name' && value.length < 2) {
                     showFieldError(input, 'El nombre debe tener al menos 2 caracteres.');
                     isValid = false;
                     return;
                 }
-                
                 if (input.name === 'message' && value.length < 10) {
                     showFieldError(input, 'El mensaje debe tener al menos 10 caracteres.');
                     isValid = false;
                     return;
                 }
-                
                 clearFieldError(input);
             });
-            
-            console.log('Formulario válido:', isValid); // Debug
             return isValid;
         }
-
         // Sistema de notificaciones mejorado
         function showNotification(type, title, message, subtitle = '') {
             const container = document.getElementById('notification-container');
             if (!container) return;
-
             // Crear elemento de notificación
             const notification = document.createElement('div');
             notification.className = `notification ${type}`;
-            
             // Crear ID único para la notificación
             const notificationId = 'notification-' + Date.now();
             notification.id = notificationId;
-
             // Icono según el tipo
             const icon = type === 'success' 
                 ? '<svg class="notification-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>'
                 : '<svg class="notification-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path></svg>';
-
             notification.innerHTML = `
                 <div class="notification-content">
                     <div class="notification-header">
@@ -615,15 +504,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     ×
                 </button>
             `;
-
             // Agregar al contenedor
             container.appendChild(notification);
-
             // Auto-cerrar después de 15 segundos (más tiempo para leer)
             setTimeout(() => {
                 closeNotification(notificationId);
             }, 15000);
-
             // Permitir cerrar haciendo clic en toda la notificación
             notification.addEventListener('click', (e) => {
                 if (!e.target.classList.contains('notification-close')) {
@@ -631,7 +517,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         }
-
         // Función global para cerrar notificaciones
         window.closeNotification = function(notificationId) {
             const notification = document.getElementById(notificationId);
@@ -644,7 +529,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, 300);
             }
         };
-
         function showSuccessMessage(message) {
             showNotification(
                 'success',
@@ -652,13 +536,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 'Nos pondremos en contacto a la brevedad',
                 'Revisaremos tu mensaje y te responderemos en las próximas 24 horas'
             );
-            
             // Limpiar el feedback del formulario
             if (feedbackEl) {
                 feedbackEl.innerHTML = '';
             }
         }
-
         function showErrorMessage(message) {
             showNotification(
                 'error',
@@ -666,13 +548,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 message,
                 'Por favor, inténtalo de nuevo o contáctanos por WhatsApp'
             );
-            
             // Limpiar el feedback del formulario
             if (feedbackEl) {
                 feedbackEl.innerHTML = '';
             }
         }
-
         function showFieldError(input, message) {
             input.classList.add('invalid');
             const errorEl = input.nextElementSibling;
@@ -680,7 +560,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 errorEl.textContent = message;
             }
         }
-
         function clearFieldError(input) {
             input.classList.remove('invalid');
             const errorEl = input.nextElementSibling;
@@ -689,12 +568,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
-    
     // --- 9. COMPORTAMIENTO DE SCROLL (REVEAL Y BOTÓN "VOLVER ARRIBA") ---
     function initScrollBehavior() {
         const backToTopButton = document.getElementById('back-to-top');
         const revealElements = document.querySelectorAll('.reveal-on-scroll');
-        
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -702,27 +579,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         }, { threshold: 0.1 });
-
         revealElements.forEach(el => observer.observe(el));
-
         window.addEventListener('scroll', () => {
             backToTopButton.classList.toggle('opacity-0', window.scrollY <= 300);
             backToTopButton.classList.toggle('translate-y-4', window.scrollY <= 300);
         });
-        
         backToTopButton.addEventListener('click', () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     }
-
     // ===================================
     // PROCESO VISUAL INTERACTIVO
     // ===================================
-    
     function initProcessSection() {
         const processSteps = document.querySelectorAll('.process-step');
         const progressDots = document.querySelectorAll('.progress-dot');
-        
         // Observador para animaciones de entrada
         const processObserver = new IntersectionObserver((entries) => {
             entries.forEach((entry, index) => {
@@ -736,12 +607,10 @@ document.addEventListener('DOMContentLoaded', () => {
             threshold: 0.2,
             rootMargin: '0px 0px -100px 0px'
         });
-        
         // Observar cada paso
         processSteps.forEach(step => {
             processObserver.observe(step);
         });
-        
         // Funcionalidad de los dots de progreso
         progressDots.forEach((dot, index) => {
             dot.addEventListener('click', () => {
@@ -749,7 +618,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 progressDots.forEach(d => d.classList.remove('active'));
                 // Agregar active al dot clickeado
                 dot.classList.add('active');
-                
                 // Hacer scroll al paso correspondiente
                 const targetStep = document.querySelector(`[data-step="${index + 1}"]`);
                 if (targetStep) {
@@ -758,7 +626,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         block: 'center'
                     });
                 }
-                
                 // Efecto visual en el paso
                 const stepCard = targetStep.querySelector('.process-card');
                 stepCard.style.transform = 'scale(1.02)';
@@ -767,22 +634,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, 300);
             });
         });
-        
         // Actualizar dot activo basado en scroll
         const updateActiveStep = () => {
             const scrollPosition = window.scrollY + window.innerHeight / 2;
-            
             processSteps.forEach((step, index) => {
                 const stepTop = step.offsetTop;
                 const stepBottom = stepTop + step.offsetHeight;
-                
                 if (scrollPosition >= stepTop && scrollPosition <= stepBottom) {
                     progressDots.forEach(d => d.classList.remove('active'));
                     progressDots[index].classList.add('active');
                 }
             });
         };
-        
         // Throttle function para performance
         let ticking = false;
         const throttledUpdateActiveStep = () => {
@@ -794,60 +657,40 @@ document.addEventListener('DOMContentLoaded', () => {
                 ticking = true;
             }
         };
-        
         window.addEventListener('scroll', throttledUpdateActiveStep);
-        
         // Efectos hover adicionales
         processSteps.forEach(step => {
             const card = step.querySelector('.process-card');
             const icon = step.querySelector('.process-icon');
-            
             card.addEventListener('mouseenter', () => {
                 icon.style.transform = 'translateY(-5px) scale(1.1)';
             });
-            
             card.addEventListener('mouseleave', () => {
                 icon.style.transform = '';
             });
         });
-        
-        console.log('✅ Proceso visual interactivo inicializado');
     }
-    
     // --- PROCESO VISUAL INTERACTIVO ---
     function initProcessTimeline() {
-        console.log('🔧 Inicializando proceso visual...');
-        
         const processSteps = document.querySelectorAll('.process-step');
         const progressDots = document.querySelectorAll('.progress-dot');
-        
-        console.log(`📊 Encontrados ${processSteps.length} pasos del proceso`);
-        console.log(`📊 Encontrados ${progressDots.length} progress dots`);
-        
         if (!processSteps.length) {
             console.error('❌ No se encontraron pasos del proceso');
             return;
         }
-
         // Forzar visibilidad de todos los pasos inmediatamente para debugging
-        console.log('🚀 Forzando visibilidad de todos los pasos...');
         processSteps.forEach((step, index) => {
             step.classList.add('visible');
-            console.log(`✅ Paso ${index + 1} marcado como visible`);
         });
-
         // Activar el primer dot
         if (progressDots.length > 0) {
             progressDots[0].classList.add('active');
-            console.log('✅ Primer progress dot activado');
         }
-
         // Mostrar pasos en scroll
         const processObserver = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    
                     // Activar el dot correspondiente
                     const stepNumber = entry.target.dataset.step;
                     if (stepNumber) {
@@ -865,82 +708,64 @@ document.addEventListener('DOMContentLoaded', () => {
             threshold: 0.3,
             rootMargin: '-50px'
         });
-
         // Observar todos los pasos (comentado temporalmente para debugging)
         /*
         processSteps.forEach(step => {
             processObserver.observe(step);
         });
         */
-
         // Interactividad de los progress dots
         progressDots.forEach(dot => {
             dot.addEventListener('click', () => {
                 const stepNumber = dot.dataset.step;
                 const targetStep = document.querySelector(`.process-step[data-step="${stepNumber}"]`);
-                
                 if (targetStep) {
                     targetStep.scrollIntoView({
                         behavior: 'smooth',
                         block: 'center'
                     });
-                    
                     // Activar el dot clickeado
                     progressDots.forEach(d => d.classList.remove('active'));
                     dot.classList.add('active');
-                    
                     // Hacer visible el step si no lo está
                     targetStep.classList.add('visible');
                 }
             });
         });
-
-        console.log('✅ Proceso visual inicializado correctamente con debugging activo');
     }
-
-    // --- INICIALIZACIÓN ÚNICA Y SEGURA ---
-    document.addEventListener('DOMContentLoaded', () => {
-        // Inicializar funcionalidades principales
-        if (typeof initPageFunctionality === 'function') {
-            initPageFunctionality();
-        }
-        // Inicializar proceso visual interactivo si existe
-        if (typeof initProcessTimeline === 'function') {
-            setTimeout(() => {
-                initProcessTimeline();
-                console.log('Página cargada correctamente - Proceso visual inicializado');
-            }, 100);
-        }
-        // Inicializar fondo 3D si existe
-        if (typeof init3DBackground === 'function' && typeof animate3D === 'function') {
-            init3DBackground();
-            animate3D();
-        }
+    // --- INICIALIZACIÓN SIMPLIFICADA ---
+    document.addEventListener('DOMContentLoaded', async () => {
+        // Comentado temporalmente para evitar errores 404/500
+        // analytics = new AnalyticsClient();
+        // await getCSRFToken();
+        // Inicializar funciones básicas
+        // initEnhancedContactForm(); // Reemplazado por initContactForm()
+        // initEnhancedQuiz(); // Comentado temporalmente
+        // await loadTestimonials(); // Comentado temporalmente
+        // 
     });
-
+    // Inicializar el fondo 3D cuando el DOM esté listo
+    document.addEventListener('DOMContentLoaded', () => {
+        init3DBackground();
+        animate3D();
+    });
 });
-
 // --- 10. ANIMACIÓN DE FONDO CON THREE.JS (OPTIMIZADA) ---
 let scene, camera, renderer, stars, atom;
-
 function init3DBackground() {
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
     camera.position.z = 5;
-    
     const canvas = document.getElementById('bg-canvas');
     renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: "low-power" });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-
     // MEJORA FASE 2: Sistema de estrellas mejorado con colores y tamaños variables
     const isMobile = window.innerWidth < 768;
     const isLowPerformance = navigator.hardwareConcurrency < 4;
     const starCount = isMobile ? 3000 : (isLowPerformance ? 5000 : 8000);
-    
     // Crear múltiples grupos de estrellas con diferentes colores y tamaños
     const starGroups = [];
-    
     // Grupo 1: Estrellas blancas pequeñas (60%)
     const whiteStarVertices = [];
     const whiteStarSizes = [];
@@ -967,7 +792,6 @@ function init3DBackground() {
     const whiteStars = new THREE.Points(whiteStarGeometry, whiteStarMaterial);
     scene.add(whiteStars);
     starGroups.push(whiteStars);
-    
     // Grupo 2: Estrellas violetas (25%)
     const purpleStarVertices = [];
     const purpleStarSizes = [];
@@ -994,7 +818,6 @@ function init3DBackground() {
     const purpleStars = new THREE.Points(purpleStarGeometry, purpleStarMaterial);
     scene.add(purpleStars);
     starGroups.push(purpleStars);
-    
     // Grupo 3: Estrellas magenta (15%)
     const magentaStarVertices = [];
     const magentaStarSizes = [];
@@ -1021,20 +844,16 @@ function init3DBackground() {
     const magentaStars = new THREE.Points(magentaStarGeometry, magentaStarMaterial);
     scene.add(magentaStars);
     starGroups.push(magentaStars);
-    
     // Guardar referencia para animación
     stars = { groups: starGroups };
-    
     // Átomo de energía para la sección "Quiénes Somos" - DESHABILITADO
     // NOTA: Átomo 3D removido para mejorar performance y eliminar distracción visual
     const atomGroup = new THREE.Group();
     atomGroup.visible = false; // Átomo completamente oculto
     atom = atomGroup;
     scene.add(atom);
-    
     window.addEventListener('resize', onWindowResize);
     document.addEventListener('mousemove', onMouseMove);
-
     // Observer para mostrar/ocultar el átomo - DESHABILITADO
     // const nosotrosSection = document.getElementById('nosotros');
     // const atomObserver = new IntersectionObserver((entries) => {
@@ -1044,62 +863,49 @@ function init3DBackground() {
     // }, { threshold: 0.1 });
     // atomObserver.observe(nosotrosSection);
 }
-
 function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
 }
-
 function onMouseMove(event) {
     if (camera) {
         const mouseX = (event.clientX / window.innerWidth - 0.5) * 2;
         const mouseY = -(event.clientY / window.innerHeight - 0.5) * 2;
-        
         // Mueve la cámara principal
         camera.position.x += (mouseX * 0.1 - camera.position.x) * 0.02;
         camera.position.y += (mouseY * 0.1 - camera.position.y) * 0.02;
         camera.lookAt(scene.position);
-
         // Animación del átomo removida para mejor performance
     }
 }
-
 let clock = new THREE.Clock();
 function animate3D() {
     requestAnimationFrame(animate3D);
     if (document.hidden) { return; }
-    
     const elapsedTime = clock.getElapsedTime();
-    
     // Animación de grupos de estrellas con velocidades diferentes
     if (stars && stars.groups) {
         stars.groups.forEach((starGroup, index) => {
             // Velocidades diferentes para cada grupo
             const speed = 0.05 + (index * 0.02); // Velocidades: 0.05, 0.07, 0.09
             starGroup.position.z = (elapsedTime * speed) % 5;
-            
             // Rotación sutil para las estrellas de colores
             if (index > 0) {
                 starGroup.rotation.z = elapsedTime * 0.01 * index;
             }
         });
     }
-    
     // Animación del átomo removida - mejor performance
-
     renderer.render(scene, camera);
 }
-
 // ============================================
 // INTEGRACIÓN CON BACKEND - FASE 3
 // ============================================
-
 // --- API CLIENT Y CONFIGURACIÓN ---
 const API_BASE_URL = window.location.origin + '/api';
 let csrfToken = null;
-
 // Obtener token CSRF al cargar la página
 async function getCSRFToken() {
     try {
@@ -1112,7 +918,6 @@ async function getCSRFToken() {
         console.error('Error al obtener token CSRF:', error);
     }
 }
-
 // --- ANALYTICS CLIENT ---
 class AnalyticsClient {
     constructor() {
@@ -1120,16 +925,13 @@ class AnalyticsClient {
         this.pageLoadTime = Date.now();
         this.eventsQueue = [];
         this.isOnline = navigator.onLine;
-        
         this.initEventListeners();
         this.trackPageView();
         this.startHeartbeat();
     }
-
     generateSessionId() {
         return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
     }
-
     initEventListeners() {
         // Detectar cuando el usuario se va
         window.addEventListener('beforeunload', () => {
@@ -1139,17 +941,14 @@ class AnalyticsClient {
             });
             this.flushEvents();
         });
-
         // Detectar cambios de conectividad
         window.addEventListener('online', () => {
             this.isOnline = true;
             this.flushEvents();
         });
-
         window.addEventListener('offline', () => {
             this.isOnline = false;
         });
-
         // Trackear scroll depth
         let maxScrollDepth = 0;
         window.addEventListener('scroll', throttle(() => {
@@ -1162,13 +961,11 @@ class AnalyticsClient {
             }
         }, 1000));
     }
-
     getScrollDepth() {
         const scrollTop = window.pageYOffset;
         const docHeight = document.documentElement.scrollHeight - window.innerHeight;
         return Math.round((scrollTop / docHeight) * 100);
     }
-
     async trackPageView() {
         const data = {
             page: window.location.pathname,
@@ -1179,10 +976,8 @@ class AnalyticsClient {
             screenResolution: `${screen.width}x${screen.height}`,
             timestamp: new Date().toISOString()
         };
-
         await this.sendEvent('page_view', data);
     }
-
     async trackEvent(eventType, data = {}) {
         const eventData = {
             event: eventType,
@@ -1193,14 +988,12 @@ class AnalyticsClient {
                 page: window.location.pathname
             }
         };
-
         if (this.isOnline) {
             await this.sendEvent('event', eventData);
         } else {
             this.eventsQueue.push(eventData);
         }
     }
-
     async trackInteraction(type, element, section = null, value = null) {
         const data = {
             type,
@@ -1209,10 +1002,8 @@ class AnalyticsClient {
             value,
             sessionId: this.sessionId
         };
-
         await this.sendEvent('interaction', data);
     }
-
     async sendEvent(endpoint, data) {
         try {
             const response = await fetch(`${API_BASE_URL}/analytics/${endpoint}`, {
@@ -1222,11 +1013,9 @@ class AnalyticsClient {
                 },
                 body: JSON.stringify(data)
             });
-
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-
             return await response.json();
         } catch (error) {
             console.error(`Error enviando evento ${endpoint}:`, error);
@@ -1234,18 +1023,14 @@ class AnalyticsClient {
             this.eventsQueue.push({ endpoint, data });
         }
     }
-
     async flushEvents() {
         if (this.eventsQueue.length === 0 || !this.isOnline) return;
-
         const events = [...this.eventsQueue];
         this.eventsQueue = [];
-
         for (const event of events) {
             await this.sendEvent(event.endpoint, event.data);
         }
     }
-
     startHeartbeat() {
         // Enviar heartbeat cada 30 segundos para usuarios activos
         setInterval(() => {
@@ -1257,28 +1042,22 @@ class AnalyticsClient {
         }, 30000);
     }
 }
-
 // --- ENHANCED CONTACT FORM ---
 function initEnhancedContactForm() {
     const form = document.getElementById('contact-form');
     if (!form) return;
-
     const submitButton = form.querySelector('button[type="submit"]');
     const originalButtonText = submitButton.textContent;
-
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
-
         // Analytics
         analytics.trackEvent('form_submit_attempt', {
             formType: 'contact'
         });
-
         // UI feedback
         submitButton.disabled = true;
         submitButton.textContent = 'Enviando...';
         submitButton.classList.add('opacity-50');
-
         try {
             const formData = new FormData(form);
             const data = {
@@ -1288,7 +1067,6 @@ function initEnhancedContactForm() {
                 message: formData.get('message'),
                 csrf_token: csrfToken
             };
-
             const response = await fetch(`${API_BASE_URL}/contact/submit`, {
                 method: 'POST',
                 headers: {
@@ -1296,22 +1074,18 @@ function initEnhancedContactForm() {
                 },
                 body: JSON.stringify(data)
             });
-
             const result = await response.json();
-
             if (result.success) {
                 // Éxito
                 analytics.trackEvent('form_submit_success', {
                     formType: 'contact',
                     hasCompany: !!data.company
                 });
-
                 showNotification('¡Mensaje enviado correctamente! Te contactaremos pronto.', 'success');
                 form.reset();
             } else {
                 throw new Error(result.error || 'Error al enviar el mensaje');
             }
-
         } catch (error) {
             console.error('Error al enviar formulario:', error);
             analytics.trackEvent('form_submit_error', {
@@ -1327,18 +1101,15 @@ function initEnhancedContactForm() {
         }
     });
 }
-
 // --- ENHANCED QUIZ ---
 let quizQuestions = [];
 let currentQuestionIndex = 0;
 let quizAnswers = [];
-
 async function initEnhancedQuiz() {
     try {
         // Cargar preguntas del quiz
         const response = await fetch(`${API_BASE_URL}/quiz/questions`);
         const data = await response.json();
-        
         if (data.success) {
             quizQuestions = data.questions;
             setupQuizUI();
@@ -1347,25 +1118,19 @@ async function initEnhancedQuiz() {
         console.error('Error al cargar quiz:', error);
     }
 }
-
 function setupQuizUI() {
     const quizContainer = document.getElementById('quiz-container');
     if (!quizContainer) return;
-
     // Trackear inicio del quiz
     analytics.trackEvent('quiz_started', {
         totalQuestions: quizQuestions.length
     });
-
     renderCurrentQuestion();
 }
-
 function renderCurrentQuestion() {
     const quizContainer = document.getElementById('quiz-container');
     const question = quizQuestions[currentQuestionIndex];
-    
     if (!question) return;
-
     const questionHTML = `
         <div class="quiz-question" data-question="${currentQuestionIndex}">
             <div class="mb-4">
@@ -1378,7 +1143,6 @@ function renderCurrentQuestion() {
                 </div>
                 <h3 class="text-xl font-bold text-white mb-4">${question.question}</h3>
             </div>
-            
             <div class="quiz-options space-y-3">
                 ${question.options.map((option, index) => `
                     <button class="quiz-option w-full p-4 text-left rounded-lg border border-gray-600 hover:border-blue-500 hover:bg-blue-500/10 transition-all duration-200"
@@ -1387,7 +1151,6 @@ function renderCurrentQuestion() {
                     </button>
                 `).join('')}
             </div>
-            
             <div class="mt-6 flex justify-between">
                 <button id="quiz-prev" class="px-4 py-2 text-gray-400 hover:text-white transition-colors" ${currentQuestionIndex === 0 ? 'disabled' : ''}>
                     ← Anterior
@@ -1398,29 +1161,22 @@ function renderCurrentQuestion() {
             </div>
         </div>
     `;
-
     quizContainer.innerHTML = questionHTML;
-
     // Event listeners para opciones
     const options = quizContainer.querySelectorAll('.quiz-option');
     const nextButton = document.getElementById('quiz-next');
     const prevButton = document.getElementById('quiz-prev');
-
     options.forEach(option => {
         option.addEventListener('click', () => {
             // Remover selección anterior
             options.forEach(opt => opt.classList.remove('border-blue-500', 'bg-blue-500/20'));
-            
             // Seleccionar nueva opción
             option.classList.add('border-blue-500', 'bg-blue-500/20');
-            
             // Guardar respuesta
             quizAnswers[currentQuestionIndex] = option.dataset.value;
-            
             // Habilitar botón siguiente
             nextButton.disabled = false;
             nextButton.classList.remove('opacity-50', 'cursor-not-allowed');
-
             // Analytics
             analytics.trackEvent('quiz_question_answered', {
                 questionIndex: currentQuestionIndex,
@@ -1429,7 +1185,6 @@ function renderCurrentQuestion() {
             });
         });
     });
-
     nextButton.addEventListener('click', () => {
         if (currentQuestionIndex === quizQuestions.length - 1) {
             submitQuiz();
@@ -1438,7 +1193,6 @@ function renderCurrentQuestion() {
             renderCurrentQuestion();
         }
     });
-
     prevButton.addEventListener('click', () => {
         if (currentQuestionIndex > 0) {
             currentQuestionIndex--;
@@ -1446,19 +1200,16 @@ function renderCurrentQuestion() {
         }
     });
 }
-
 async function submitQuiz() {
     try {
         analytics.trackEvent('quiz_submit_attempt', {
             totalQuestions: quizQuestions.length,
             answeredQuestions: quizAnswers.filter(a => a).length
         });
-
         const data = {
             answers: quizAnswers,
             csrf_token: csrfToken
         };
-
         const response = await fetch(`${API_BASE_URL}/quiz/submit`, {
             method: 'POST',
             headers: {
@@ -1466,20 +1217,16 @@ async function submitQuiz() {
             },
             body: JSON.stringify(data)
         });
-
         const result = await response.json();
-
         if (result.success) {
             analytics.trackEvent('quiz_submit_success', {
                 score: result.result.score,
                 recommendation: result.result.recommendation
             });
-
             showQuizResults(result.result);
         } else {
             throw new Error(result.error || 'Error al procesar quiz');
         }
-
     } catch (error) {
         console.error('Error al enviar quiz:', error);
         analytics.trackEvent('quiz_submit_error', {
@@ -1488,10 +1235,8 @@ async function submitQuiz() {
         showNotification('Error al procesar el quiz. Por favor, inténtalo de nuevo.', 'error');
     }
 }
-
 function showQuizResults(result) {
     const quizContainer = document.getElementById('quiz-container');
-    
     const resultsHTML = `
         <div class="quiz-results text-center">
             <div class="mb-6">
@@ -1503,24 +1248,20 @@ function showQuizResults(result) {
                 <h3 class="text-2xl font-bold text-white mb-2">¡Quiz Completado!</h3>
                 <p class="text-blue-400 text-lg">Puntuación: ${result.score}/100</p>
             </div>
-            
             <div class="bg-gray-800 rounded-lg p-6 mb-6 text-left">
                 <h4 class="text-lg font-semibold text-white mb-3">Nuestra Recomendación:</h4>
                 <p class="text-gray-300 mb-4">${result.recommendation}</p>
-                
                 ${result.services.length > 0 ? `
                     <h5 class="text-md font-semibold text-white mb-2">Servicios Recomendados:</h5>
                     <ul class="text-blue-400 space-y-1 mb-4">
                         ${result.services.map(service => `<li>• ${service}</li>`).join('')}
                     </ul>
                 ` : ''}
-                
                 <h5 class="text-md font-semibold text-white mb-2">Próximos Pasos:</h5>
                 <ol class="text-gray-300 space-y-1">
                     ${result.nextSteps.map((step, index) => `<li>${index + 1}. ${step}</li>`).join('')}
                 </ol>
             </div>
-            
             <div class="space-y-3">
                 <button id="contact-us-quiz" class="w-full py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-200">
                     Solicitar Consulta Gratuita
@@ -1531,37 +1272,30 @@ function showQuizResults(result) {
             </div>
         </div>
     `;
-
     quizContainer.innerHTML = resultsHTML;
-
     // Event listeners
     document.getElementById('contact-us-quiz').addEventListener('click', () => {
         analytics.trackEvent('quiz_result_contact_clicked', {
             score: result.score
         });
-        
         // Scroll al formulario de contacto
         const contactSection = document.getElementById('contact');
         if (contactSection) {
             contactSection.scrollIntoView({ behavior: 'smooth' });
         }
     });
-
     document.getElementById('restart-quiz').addEventListener('click', () => {
         analytics.trackEvent('quiz_restarted');
-        
         currentQuestionIndex = 0;
         quizAnswers = [];
         renderCurrentQuestion();
     });
 }
-
 // --- ENHANCED TESTIMONIALS ---
 async function loadTestimonials() {
     try {
         const response = await fetch(`${API_BASE_URL}/testimonials`);
         const data = await response.json();
-        
         if (data.success && data.testimonials.length > 0) {
             renderTestimonials(data.testimonials);
             analytics.trackEvent('testimonials_loaded', {
@@ -1572,11 +1306,9 @@ async function loadTestimonials() {
         console.error('Error al cargar testimonios:', error);
     }
 }
-
 function renderTestimonials(testimonials) {
     const container = document.getElementById('testimonials-container');
     if (!container) return;
-
     const testimonialsHTML = testimonials.map(testimonial => `
         <div class="testimonial-card bg-gray-800 rounded-lg p-6 border border-gray-700">
             <div class="flex items-center mb-4">
@@ -1596,10 +1328,8 @@ function renderTestimonials(testimonials) {
             <p class="text-gray-300">${testimonial.content}</p>
         </div>
     `).join('');
-
     container.innerHTML = testimonialsHTML;
 }
-
 // --- NOTIFICATION SYSTEM ---
 function showNotification(message, type = 'info') {
     const notification = document.createElement('div');
@@ -1608,7 +1338,6 @@ function showNotification(message, type = 'info') {
         type === 'error' ? 'bg-red-600' : 
         'bg-blue-600'
     } text-white max-w-sm`;
-    
     notification.innerHTML = `
         <div class="flex items-center">
             <span class="flex-1">${message}</span>
@@ -1619,14 +1348,11 @@ function showNotification(message, type = 'info') {
             </button>
         </div>
     `;
-
     document.body.appendChild(notification);
-
     // Animar entrada
     setTimeout(() => {
         notification.classList.remove('translate-x-full');
     }, 100);
-
     // Auto-remover después de 5 segundos
     setTimeout(() => {
         notification.classList.add('translate-x-full');
@@ -1635,7 +1361,6 @@ function showNotification(message, type = 'info') {
         }, 300);
     }, 5000);
 }
-
 // --- UTILITY FUNCTIONS ---
 function throttle(func, wait) {
     let timeout;
@@ -1648,30 +1373,23 @@ function throttle(func, wait) {
         timeout = setTimeout(later, wait);
     };
 }
-
 // --- WHATSAPP LINK SEGURO ---
 function initSecureWhatsApp() {
     const whatsappLink = document.getElementById('whatsapp-link');
     if (!whatsappLink) return;
-
     // Número ofuscado por seguridad - dividido en partes
     const parts = ['54', '911', '25124', '207'];
     const fullNumber = parts.join('');
-    
     // Mensaje predefinido
     const message = encodeURIComponent('Hola Neptune, me interesa conocer más sobre sus servicios de IA');
-    
     // Construir URL de WhatsApp de forma segura
     const whatsappURL = `https://wa.me/${fullNumber}?text=${message}`;
-    
     // Event listener en lugar de href directo
     whatsappLink.addEventListener('click', function(e) {
         e.preventDefault();
-        
         // Verificar que es un click legítimo (no automático)
         if (e.isTrusted) {
             window.open(whatsappURL, '_blank', 'noopener,noreferrer');
-            
             // Analytics tracking (si está disponible)
             if (typeof gtag !== 'undefined') {
                 gtag('event', 'whatsapp_contact', {
@@ -1679,29 +1397,21 @@ function initSecureWhatsApp() {
                     'event_label': 'whatsapp_click'
                 });
             }
-            
-            console.log('📱 WhatsApp link clicked securely');
         }
     });
-    
     // Agregar hover effect adicional
     whatsappLink.addEventListener('mouseenter', function() {
         this.style.transform = 'scale(1.02)';
     });
-    
     whatsappLink.addEventListener('mouseleave', function() {
         this.style.transform = 'scale(1)';
     });
-    
-    console.log('✅ WhatsApp link configurado de forma segura');
 }
-
 // --- INICIALIZACIÓN SIMPLIFICADA ---
 document.addEventListener('DOMContentLoaded', async () => {
     // Comentado temporalmente para evitar errores 404/500
     // analytics = new AnalyticsClient();
     // await getCSRFToken();
-    
     // Esperar un momento para asegurar que el DOM esté completamente renderizado
     setTimeout(() => {
         // Inicializar funciones básicas
@@ -1709,16 +1419,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         // initEnhancedContactForm(); // Reemplazado por initContactForm()
         // initEnhancedQuiz(); // Comentado temporalmente
         // await loadTestimonials(); // Comentado temporalmente
-        
-        console.log('Página cargada correctamente - Proceso visual inicializado');
     }, 100);
 });
-
 // Inicializar el fondo 3D cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', () => {
     init3DBackground();
     animate3D();
 });
-
 // Log de confirmación de carga del script
-console.log('🚀 Script.js cargado correctamente');

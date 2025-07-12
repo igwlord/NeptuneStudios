@@ -338,10 +338,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 const isExpanded = button.getAttribute('aria-expanded') === 'true';
                 button.setAttribute('aria-expanded', !isExpanded);
                 content.style.maxHeight = !isExpanded ? content.scrollHeight + 'px' : '0px';
-            });        });
-
-        // Acordeón inicializado
-    }
+            });
+        });
+        
+        }
 
     // --- 7. LÓGICA DE TESTIMONIOS ---
     function initTestimonials() {
@@ -376,6 +376,22 @@ document.addEventListener('DOMContentLoaded', () => {
         const submitButton = document.getElementById('submit-button');
         const messageTextarea = document.getElementById('message');
         const charCounter = document.getElementById('char-counter');
+        const contactTitle = document.querySelector('#contacto .section-title');
+
+        // Restaurar el título si falta
+        if (contactTitle) {
+            contactTitle.textContent = 'Contactanos';
+            contactTitle.style.display = 'block';
+        } else {
+            // Si el título no existe, lo creamos
+            const container = document.querySelector('#contacto .container');
+            if (container) {
+                const h2 = document.createElement('h2');
+                h2.className = 'section-title';
+                h2.textContent = 'Contactanos';
+                container.insertBefore(h2, container.firstChild);
+            }
+        }
 
         if (!form) return;
         
@@ -389,14 +405,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // FUNCIÓN GLOBAL PARA ACTIVAR MODO TESTING
         window.activarModoTesting = function() {
             window.TESTING_MODE = true;
-            console.log('🧪 El formulario simulará envío exitoso sin usar backend');
             return 'Modo testing activado - formulario will simulate success';
         };
         
         window.desactivarModoTesting = function() {
             window.TESTING_MODE = false;
-            console.log('� MODO TESTING DESACTIVADO');
-            console.log('🔧 El formulario usará el backend real');
             return 'Modo testing desactivado - formulario will use real backend';
         };
         
@@ -443,7 +456,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Inicializar contador
             safeUpdateCharCounter();
             
-            // console.log('Contador de caracteres inicializado'); // Debug
+            // 
         } else {
             console.error('No se encontraron elementos:', { messageTextarea, charCounter }); // Debug
         }
@@ -455,8 +468,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Limpiar localStorage de rate limiting si existe
             if (localStorage.getItem('contactFormSubmissions')) {
                 localStorage.removeItem('contactFormSubmissions');
-                console.log('Rate limiting bypasseado para testing');
-            }
+                }
             
             if (!validateForm()) return;
             
@@ -472,23 +484,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     email: document.getElementById('email').value.trim(),
                     mensaje: document.getElementById('message').value.trim()
                 };
-                
-                console.log('Datos del formulario:', formData); // Debug
 
                 // Detectar si estamos en Netlify o desarrollo local
                 const apiUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
                     ? '/api/contact/send' 
                     : '/.netlify/functions/contact';
-                    
-                console.log('URL de API que se usará:', apiUrl);
-                console.log('Hostname actual:', window.location.hostname);
-                
-                // MODO DE TESTING: Simular respuesta exitosa 
+
                 if ((window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') || window.TESTING_MODE) {
-                    console.log('🧪 MODO TESTING ACTIVADO - Simulando envío exitoso');
-                    console.log('📧 Datos que se enviarían:', formData);
                     
-                    // Simular delay de red
                     await new Promise(resolve => setTimeout(resolve, 1500));
                     
                     // Simular respuesta exitosa
@@ -512,8 +515,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 const result = await response.json();
-                
-                console.log('Respuesta del servidor:', result); // Debug
 
                 if (result.success) {
                     // Éxito - mostrar mensaje y limpiar formulario
@@ -543,13 +544,10 @@ document.addEventListener('DOMContentLoaded', () => {
         function validateForm() {
             let isValid = true;
             const inputs = form.querySelectorAll('[required]');
-            
-            console.log('Validando formulario...'); // Debug
-            
+
             inputs.forEach(input => {
                 const value = input.value.trim();
-                console.log(`Campo ${input.name || input.id}: "${value}"`); // Debug
-                
+
                 if (!value) {
                     showFieldError(input, 'Este campo es obligatorio.');
                     isValid = false;
@@ -579,8 +577,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 clearFieldError(input);
             });
-            
-            console.log('Formulario válido:', isValid); // Debug
+
             return isValid;
         }
 
@@ -690,11 +687,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    // --- 9. COMPORTAMIENTO DE SCROLL (REVEAL Y BOTÓN "VOLVER ARRIBA") ---
+    // --- 9. COMPORTAMIENTO DE SCROLL (REVEAL) ---
     function initScrollBehavior() {
-        const backToTopButton = document.getElementById('back-to-top');
         const revealElements = document.querySelectorAll('.reveal-on-scroll');
-        
+
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -704,15 +700,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { threshold: 0.1 });
 
         revealElements.forEach(el => observer.observe(el));
-
-        window.addEventListener('scroll', () => {
-            backToTopButton.classList.toggle('opacity-0', window.scrollY <= 300);
-            backToTopButton.classList.toggle('translate-y-4', window.scrollY <= 300);
-        });
-        
-        backToTopButton.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
     }
 
     // ===================================
@@ -811,18 +798,12 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
         
-        console.log('✅ Proceso visual interactivo inicializado');
-    }
+        }
     
     // --- PROCESO VISUAL INTERACTIVO ---
     function initProcessTimeline() {
-        console.log('🔧 Inicializando proceso visual...');
-        
         const processSteps = document.querySelectorAll('.process-step');
         const progressDots = document.querySelectorAll('.progress-dot');
-        
-        console.log(`📊 Encontrados ${processSteps.length} pasos del proceso`);
-        console.log(`📊 Encontrados ${progressDots.length} progress dots`);
         
         if (!processSteps.length) {
             console.error('❌ No se encontraron pasos del proceso');
@@ -830,17 +811,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Forzar visibilidad de todos los pasos inmediatamente para debugging
-        console.log('🚀 Forzando visibilidad de todos los pasos...');
         processSteps.forEach((step, index) => {
             step.classList.add('visible');
-            console.log(`✅ Paso ${index + 1} marcado como visible`);
-        });
+            });
 
         // Activar el primer dot
         if (progressDots.length > 0) {
             progressDots[0].classList.add('active');
-            console.log('✅ Primer progress dot activado');
-        }
+            }
 
         // Mostrar pasos en scroll
         const processObserver = new IntersectionObserver((entries) => {
@@ -895,8 +873,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        console.log('✅ Proceso visual inicializado correctamente con debugging activo');
-    }
+        }
 
     // --- INICIALIZACIÓN ÚNICA Y SEGURA ---
     document.addEventListener('DOMContentLoaded', () => {
@@ -1680,8 +1657,7 @@ function initSecureWhatsApp() {
                 });
             }
             
-            console.log('📱 WhatsApp link clicked securely');
-        }
+            }
     });
     
     // Agregar hover effect adicional
@@ -1693,8 +1669,7 @@ function initSecureWhatsApp() {
         this.style.transform = 'scale(1)';
     });
     
-    console.log('✅ WhatsApp link configurado de forma segura');
-}
+    }
 
 // --- INICIALIZACIÓN SIMPLIFICADA ---
 document.addEventListener('DOMContentLoaded', async () => {
@@ -1710,8 +1685,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // initEnhancedQuiz(); // Comentado temporalmente
         // await loadTestimonials(); // Comentado temporalmente
         
-        console.log('Página cargada correctamente - Proceso visual inicializado');
-    }, 100);
+        }, 100);
 });
 
 // Inicializar el fondo 3D cuando el DOM esté listo
@@ -1721,4 +1695,4 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Log de confirmación de carga del script
-console.log('🚀 Script.js cargado correctamente');
+

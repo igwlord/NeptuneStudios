@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEST - Sección Proceso</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #0a0a2e 0%, #16213e 25%, #1a1a40 50%, #2d1b69 75%, #0f0f23 100%);
+            color: #EAE2FC;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        .debug-info {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.8);
+            color: lime;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body>
+    <div class="debug-info" id="debug-info">
+        Debugging info...
+    </div>
+
+    <h1 class="text-4xl font-bold text-center mb-12 text-white">TEST: Sección "Nuestro Proceso"</h1>
+
+    <!-- Sección del proceso extraída del HTML principal -->
+    <section id="proceso" class="py-24 px-4">
+        <div class="container mx-auto max-w-7xl">
+            <h2 class="section-title">Nuestro Proceso</h2>
+            <p class="text-center text-gray-300 mb-16 text-lg max-w-3xl mx-auto">
+                De la visión a la realidad, transformamos tu negocio paso a paso con metodología probada y tecnología de vanguardia.
+            </p>
+            
+            <!-- Timeline visual interactivo -->
+            <div class="relative">
+                <!-- Línea central conectora -->
+                <div class="hidden md:block absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-purple-500 via-pink-500 to-purple-500 opacity-30"></div>
+                
+                <!-- Pasos del proceso -->
+                <div class="space-y-16 md:space-y-24">
+                    <!-- Paso 1: Diagnóstico -->
+                    <div class="process-step group" data-step="1">
+                        <div class="md:grid md:grid-cols-2 md:gap-12 items-center">
+                            <div class="md:text-right">
+                                <div class="process-card glassmorphism p-8 rounded-3xl hover:scale-105 transition-all duration-500">
+                                    <div class="flex items-center justify-center md:justify-end mb-6">
+                                        <div class="process-icon bg-gradient-to-br from-blue-500 to-cyan-500">
+                                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <h3 class="text-2xl font-bold text-white mb-4">1. Diagnóstico Integral</h3>
+                                    <p class="text-gray-300 leading-relaxed">
+                                        Analizamos tu negocio desde adentro: procesos, datos, oportunidades. 
+                                        Identificamos exactamente dónde la IA puede generar el mayor impacto.
+                                    </p>
+                                    <div class="mt-4 flex flex-wrap gap-2">
+                                        <span class="process-tag">Análisis de procesos</span>
+                                        <span class="process-tag">Auditoría de datos</span>
+                                        <span class="process-tag">Identificación de oportunidades</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hidden md:flex justify-center items-center">
+                                <div class="process-number">01</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Paso 2: Estrategia -->
+                    <div class="process-step group" data-step="2">
+                        <div class="md:grid md:grid-cols-2 md:gap-12 items-center">
+                            <div class="hidden md:flex justify-center items-center">
+                                <div class="process-number">02</div>
+                            </div>
+                            <div>
+                                <div class="process-card glassmorphism p-8 rounded-3xl hover:scale-105 transition-all duration-500">
+                                    <div class="flex items-center justify-center md:justify-start mb-6">
+                                        <div class="process-icon bg-gradient-to-br from-purple-500 to-pink-500">
+                                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <h3 class="text-2xl font-bold text-white mb-4">2. Estrategia Personalizada</h3>
+                                    <p class="text-gray-300 leading-relaxed">
+                                        Diseñamos una hoja de ruta específica para tu empresa. Cada estrategia es única, 
+                                        construida sobre tus objetivos reales y recursos disponibles.
+                                    </p>
+                                    <div class="mt-4 flex flex-wrap gap-2">
+                                        <span class="process-tag">Roadmap personalizado</span>
+                                        <span class="process-tag">ROI proyectado</span>
+                                        <span class="process-tag">Plan de implementación</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Progress dots -->
+                    <div class="flex justify-center mt-16">
+                        <div class="flex space-x-4">
+                            <div class="progress-dot active" data-step="1"></div>
+                            <div class="progress-dot" data-step="2"></div>
+                            <div class="progress-dot" data-step="3"></div>
+                            <div class="progress-dot" data-step="4"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Test function simplificada
+        function testProcessTimeline() {
+            console.log('🔧 TEST: Inicializando proceso visual...');
+            
+            const processSteps = document.querySelectorAll('.process-step');
+            const progressDots = document.querySelectorAll('.progress-dot');
+            
+            console.log(`📊 Encontrados ${processSteps.length} pasos del proceso`);
+            console.log(`📊 Encontrados ${progressDots.length} progress dots`);
+            
+            // Update debug info
+            const debugInfo = document.getElementById('debug-info');
+            debugInfo.innerHTML = `
+                Process Steps: ${processSteps.length}<br>
+                Progress Dots: ${progressDots.length}<br>
+                Status: Initializing...
+            `;
+            
+            if (!processSteps.length) {
+                console.error('❌ No se encontraron pasos del proceso');
+                debugInfo.innerHTML += '<br>❌ ERROR: No steps found';
+                return;
+            }
+
+            // Forzar visibilidad de todos los pasos inmediatamente
+            console.log('🚀 Forzando visibilidad de todos los pasos...');
+            let visibleCount = 0;
+            processSteps.forEach((step, index) => {
+                step.classList.add('visible');
+                console.log(`✅ Paso ${index + 1} marcado como visible`);
+                visibleCount++;
+            });
+
+            // Activar el primer dot
+            if (progressDots.length > 0) {
+                progressDots[0].classList.add('active');
+                console.log('✅ Primer progress dot activado');
+            }
+
+            // Update debug info
+            debugInfo.innerHTML = `
+                Process Steps: ${processSteps.length}<br>
+                Progress Dots: ${progressDots.length}<br>
+                Visible Steps: ${visibleCount}<br>
+                Status: ✅ ACTIVE
+            `;
+
+            console.log('✅ TEST: Proceso visual inicializado correctamente');
+        }
+
+        // Ejecutar cuando el DOM esté listo
+        document.addEventListener('DOMContentLoaded', testProcessTimeline);
+    </script>
+</body>
+</html>
