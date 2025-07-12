@@ -62,8 +62,29 @@
                 margin-top: 0.3rem;
                 margin-bottom: 1rem;
             }
-            .back-button {
-                bottom: 15%;
+            .neptune-mobile-title {
+                display: block;
+                position: fixed;
+                top: 0.7rem;
+                left: 50%;
+                transform: translateX(-50%);
+                font-family: 'Orbitron', 'Space Grotesk', Arial, sans-serif;
+                font-size: 2.1rem;
+                font-weight: bold;
+                color: #fff;
+                text-shadow: 0 0 8px #39FF14, 0 0 20px #39FF14, 0 0 40px #fff;
+                letter-spacing: 2px;
+                z-index: 10;
+                background: none;
+                text-decoration: none;
+                padding: 0.2rem 0.8rem;
+                border-radius: 1rem;
+                transition: color 0.2s;
+            }
+            .neptune-mobile-title:active,
+            .neptune-mobile-title:focus,
+            .neptune-mobile-title:hover {
+                color: #39FF14;
             }
         }
 
@@ -141,7 +162,8 @@
     </div>
     
     <!-- Botón para volver (fuera del contenedor principal para un posicionamiento más fácil) -->
-    <a href="https://neptunestudios.netlify.app/" class="back-button">volver</a>
+    <!-- Título NEPTUNE solo para móviles -->
+    <a href="index.html" class="neptune-mobile-title">NEPTUNE</a>
 
     <script>
         // --- Lógica del efecto de máquina de escribir (mejorada) ---
