@@ -6,107 +6,273 @@
     <title>Catálogo de Apps | Neptune Studios</title>
     <link rel="icon" href="images/favicon.webp" type="image/webp">
     <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <!-- Tailwind CDN for rapid prototyping (replace with production build for deployment) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Three.js para fondo animado -->
     <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
     <style>
+        :root {
+            --glow-color: #fde047;
+        }
         body {
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            min-height: 100vh;
-            font-family: 'Inter', 'Orbitron', Arial, sans-serif;
+            font-family: 'Inter', sans-serif;
+            background-color: #0c0a1a;
+            background-image: linear-gradient(160deg, #1e1140 0%, #0d051e 100%);
+            overflow-x: hidden;
+            color: #e0e0e0;
         }
-        .glassmorphism {
-            background: rgba(30, 41, 59, 0.7);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
-            backdrop-filter: blur(8px);
-            border-radius: 1.5rem;
-            border: 1px solid rgba(168, 85, 247, 0.15);
+        h1, h2, h3, .font-display {
+            font-family: 'Space Grotesk', 'Orbitron', sans-serif;
         }
-        .app-card {
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .app-card:hover {
-            transform: translateY(-6px) scale(1.03);
-            box-shadow: 0 8px 32px 0 rgba(168, 85, 247, 0.25);
-            border-color: #a855f7;
-        }
-        #bg-canvas {
+        #aurora-bg {
             position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(125deg, #ff00ff, #00ffff, #ff00ff);
+            background-size: 400% 400%;
+            animation: aurora 20s ease infinite;
+            filter: blur(100px);
+            opacity: 0.2;
             z-index: 0;
-            pointer-events: none;
+        }
+        @keyframes aurora {
+            0%{background-position:0% 50%}
+            50%{background-position:100% 50%}
+            100%{background-position:0% 50%}
+        }
+        #starfield-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 5s infinite ease-in-out;
+        }
+        .shooting-star {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(-45deg, rgba(255,255,255,1), rgba(255,255,255,0));
+            border-radius: 999px;
+            filter: drop-shadow(0 0 6px white);
+            animation: tail 3s ease-in-out infinite, shooting 3s ease-in-out infinite;
+        }
+        @keyframes tail {
+            0% { width: 0; }
+            30% { width: 100px; }
+            100% { width: 0; }
+        }
+        @keyframes shooting {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(300px); }
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.7; transform: scale(0.9); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+        .flip-card {
+            perspective: 1500px;
+            transform-style: preserve-3d;
+            transition: transform 0.2s ease-out;
+            cursor: pointer;
+            z-index: 1;
+            position: relative;
+        }
+        .flip-card:hover {
+            z-index: 10;
+        }
+        .flip-card.is-flipped {
+            z-index: 11;
+        }
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s cubic-bezier(0.76, 0, 0.24, 1);
+            transform-style: preserve-3d;
+        }
+        .flip-card.is-flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            border-radius: 1.5rem;
+            background: radial-gradient(circle at 100% 0%, rgb(56, 33, 126), rgb(13, 5, 30));
+            box-shadow: 0 8px 32px 0 rgba(13, 5, 30, 0.37);
+            overflow: hidden;
+        }
+        .flip-card-front::before, .flip-card-back::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: 1.5rem;
+            border: 2px solid transparent;
+            background: linear-gradient(120deg, #8166e9, #fde047, #8166e9) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: destination-out;
+            mask-composite: exclude;
+            background-size: 200% 200%;
+            animation: border-spin 4s linear infinite;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .flip-card:hover .flip-card-front::before {
+            opacity: 1;
+        }
+        @keyframes border-spin {
+            to { background-position: 200% 200%; }
+        }
+        .flip-card-front .text-7xl {
+            transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .flip-card:hover:not(.is-flipped) .flip-card-front .text-7xl {
+            transform: scale(1.15);
+        }
+        .flip-card-back {
+            transform: rotateY(180deg);
+        }
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .text-gold-gradient {
+            background-image: linear-gradient(45deg, #fde047, #fef08a, #eab308);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+            text-shadow: 0 0 15px rgba(253, 224, 71, 0.3);
         }
     </style>
 </head>
 <body class="relative overflow-x-hidden">
-    <canvas id="bg-canvas"></canvas>
-    <!-- HOME button for mobile, top right, glassmorphism style -->
-    <a href="index.html" class="fixed top-3 right-3 z-50 md:hidden flex items-center justify-center w-10 h-10 bg-white/10 backdrop-blur-md border border-purple-400/40 rounded-xl shadow-xl hover:scale-110 transition-all duration-300" style="box-shadow:0 4px 16px rgba(168,85,247,0.18);" aria-label="Ir a Home">
-        <!-- Icono de casa moderno y minimalista -->
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-purple-400" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 3.172l7 6.364V19a2 2 0 01-2 2h-3v-5H10v5H7a2 2 0 01-2-2V9.536l7-6.364zm0-2.172a1 1 0 01.707.293l8 7.273A1 1 0 0120 9.536V19a4 4 0 01-4 4h-3v-5a1 1 0 00-2 0v5H7a4 4 0 01-4-4V9.536a1 1 0 01-.293-.707l8-7.273A1 1 0 0112 1z"/>
-        </svg>
-    </a>
-    <header class="w-full py-6 px-4 md:px-12 flex items-center justify-between z-10 relative">
-        <a href="index.html" class="font-orbitron text-2xl md:text-3xl font-bold text-white tracking-widest">NEPTUNE</a>
-        <nav class="hidden md:flex gap-8">
-            <a href="index.html" class="text-gray-300 hover:text-white transition">Inicio</a>
-            <a href="#" class="text-purple-400 font-semibold">Catálogo de Apps</a>
-        </nav>
+    <div id="starfield-container"></div>
+    <div id="aurora-bg"></div>
+    <!-- Header cósmico -->
+    <header class="absolute top-0 left-0 right-0 p-6 md:p-8 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="https://neptunestudios.netlify.app/" target="_blank" class="text-2xl font-display font-bold text-white tracking-wider">
+                Neptune <span class="text-yellow-400" style="text-shadow: 0 0 8px var(--glow-color);">Studios</span>
+            </a>
+        </div>
     </header>
     <main class="relative z-10 flex flex-col items-center justify-center min-h-screen pt-12 pb-24 px-4">
-        <h1 class="font-orbitron text-4xl md:text-5xl font-bold text-white mb-4 text-center drop-shadow-lg">Nuestras Aplicaciones</h1>
-        <p class="text-lg text-gray-300 mb-12 text-center max-w-2xl">Explora nuestro catálogo de web apps diseñadas para transformar tu vida, tu negocio o solo divertirte. Cada app refleja innovación, seguridad y eficiencia, impulsadas por la visión de Neptune Studios. <span class="font-bold" style="color:#39FF14;text-shadow:0 0 10px #39FF14,0 0 20px #fff;">TOTALMENTE GRATIS</span></p>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-6xl">
-            <!-- App 1 -->
-            <div class="app-card glassmorphism p-8 flex flex-col items-center border border-gray-700">
-                <div class="w-20 h-20 mb-4 flex items-center justify-center rounded-full bg-gradient-to-br from-purple-600 to-pink-500 shadow-lg">
-                    <img src="images/nebula.webp" alt="Nebula Financial Icon" class="w-16 h-16 object-contain" loading="lazy">
+        <!-- Hub Cósmico: Sección Apps con flip-cards y animaciones -->
+        <section id="apps" class="py-8 md:py-16 w-full">
+            <div class="container mx-auto px-4 md:px-8">
+                <div class="text-center mb-12 md:mb-16 fade-in-section">
+                    <h2 class="text-3xl md:text-5xl font-bold text-white">Nuestra Constelación de Apps</h2>
+                    <p class="text-lg text-indigo-200 mt-3">Cada estrella es una solución. Conéctalas.</p>
                 </div>
-                <h2 class="font-orbitron text-2xl mb-2" style="color:#39FF14;text-shadow:0 0 10px #39FF14,0 0 20px #fff;">Nebula</h2>
-                <p class="text-gray-300 mb-4 text-center">Plataforma financiera inteligente para gestión de finanzas, control de gastos e inversiones. Seguridad y control total en la nube.</p>
-                <a href="https://nebula-v3.netlify.app" target="_blank" rel="noopener" class="mt-auto px-6 py-2 bg-purple-600 text-white rounded-full font-semibold shadow hover:bg-purple-700 transition">Ver más</a>
-            </div>
-            <!-- App 2 -->
-            <div class="app-card glassmorphism p-8 flex flex-col items-center border border-gray-700">
-                <div class="w-20 h-20 mb-4 flex items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-purple-500 shadow-lg">
-                    <img src="images/orion.webp" alt="Orion Icon" class="w-16 h-16 object-contain" loading="lazy">
+                <div id="apps-grid" class="relative grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+                    <!-- App Card: Nebula -->
+                    <div class="flip-card fade-in-section aspect-video lg:aspect-[4/3]">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <div class="text-6xl md:text-7xl mb-4" role="img" aria-label="Saturno">🪐</div>
+                                <h3 class="text-2xl md:text-3xl font-bold text-white">Nebula</h3>
+                                <p class="text-indigo-300 mt-2 font-display">Toca para saber más</p>
+                                <a href="https://nebula-v3.netlify.app/" target="_blank" class="mt-4 inline-block bg-yellow-400 text-indigo-900 font-bold py-2 px-6 rounded-full text-base hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105 shadow-lg">Ir a la página</a>
+                            </div>
+                            <div class="flip-card-back">
+                                <h3 class="text-xl md:text-2xl font-bold text-white mb-2">Nebula</h3>
+                                <p class="font-display text-yellow-400 mb-3 text-sm md:text-base">Tu universo financiero, en orden.</p>
+                                <p class="text-indigo-200 mb-4 text-xs md:text-sm">Agenda tus gastos, administra finanzas, proyecta ahorros y mantén el control total de tus cuentas.</p>
+                                <a href="https://nebula-v3.netlify.app/" target="_blank" class="font-bold text-yellow-400 transition text-base md:text-lg hover:text-yellow-300" style="text-shadow: 0 0 8px transparent; transition: text-shadow 0.3s ease;" onmouseover="this.style.textShadow='0 0 12px var(--glow-color)'" onmouseout="this.style.textShadow='0 0 8px transparent'">Descubrir Nebula &rarr;</a>
+                                <a href="https://nebula-v3.netlify.app/" target="_blank" class="mt-2 inline-block bg-yellow-400 text-indigo-900 font-bold py-2 px-6 rounded-full text-base hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105 shadow-lg">Ir a la página</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- App Card: KiloByte -->
+                    <div class="flip-card fade-in-section aspect-video lg:aspect-[4/3]" style="transition-delay: 100ms;">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <div class="text-6xl md:text-7xl mb-4" role="img" aria-label="Caja Bento">🍱</div>
+                                <h3 class="text-2xl md:text-3xl font-bold text-white">KiloByte</h3>
+                                <p class="text-indigo-300 mt-2 font-display">Toca para saber más</p>
+                                <a href="https://kilobytesapp.netlify.app/" target="_blank" class="mt-4 inline-block bg-yellow-400 text-indigo-900 font-bold py-2 px-6 rounded-full text-base hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105 shadow-lg">Ir a la página</a>
+                            </div>
+                            <div class="flip-card-back">
+                                <h3 class="text-xl md:text-2xl font-bold text-white mb-2">KiloByte</h3>
+                                <p class="font-display text-yellow-400 mb-3 text-sm md:text-base">Conquista tu bienestar, bocado a bocado.</p>
+                                <p class="text-indigo-200 mb-4 text-xs md:text-sm">Gestiona tu dieta, registra comidas y aprende a cuidarte con planes a tu medida y seguimiento de calorías.</p>
+                                <a href="https://kilobytesapp.netlify.app/" target="_blank" class="font-bold text-yellow-400 transition text-base md:text-lg hover:text-yellow-300" style="text-shadow: 0 0 8px transparent; transition: text-shadow 0.3s ease;" onmouseover="this.style.textShadow='0 0 12px var(--glow-color)'" onmouseout="this.style.textShadow='0 0 8px transparent'">Empezar en KiloByte &rarr;</a>
+                                <a href="https://kilobytesapp.netlify.app/" target="_blank" class="mt-2 inline-block bg-yellow-400 text-indigo-900 font-bold py-2 px-6 rounded-full text-base hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105 shadow-lg">Ir a la página</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- App Card: AstroLab -->
+                    <div class="flip-card fade-in-section aspect-video lg:aspect-[4/3]" style="transition-delay: 200ms;">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <div class="text-6xl md:text-7xl mb-4" role="img" aria-label="Luna Creciente">🌙</div>
+                                <h3 class="text-2xl md:text-3xl font-bold text-white">AstroLab</h3>
+                                <p class="text-indigo-300 mt-2 font-display">Toca para saber más</p>
+                                <a href="https://astrolab-web.netlify.app/" target="_blank" class="mt-4 inline-block bg-yellow-400 text-indigo-900 font-bold py-2 px-6 rounded-full text-base hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105 shadow-lg">Ir a la página</a>
+                            </div>
+                            <div class="flip-card-back">
+                                <h3 class="text-xl md:text-2xl font-bold text-white mb-2">AstroLab</h3>
+                                <p class="font-display text-yellow-400 mb-3 text-sm md:text-base">Descifra el mapa estelar de tu vida.</p>
+                                <p class="text-indigo-200 mb-4 text-xs md:text-sm">Analiza tu carta natal, aprende de astrología y trabaja en los obstáculos energéticos que te impiden crecer.</p>
+                                <a href="https://astrolab-web.netlify.app/" target="_blank" class="font-bold text-yellow-400 transition text-base md:text-lg hover:text-yellow-300" style="text-shadow: 0 0 8px transparent; transition: text-shadow 0.3s ease;" onmouseover="this.style.textShadow='0 0 12px var(--glow-color)'" onmouseout="this.style.textShadow='0 0 8px transparent'">Ver mi Carta Natal &rarr;</a>
+                                <a href="https://astrolab-web.netlify.app/" target="_blank" class="mt-2 inline-block bg-yellow-400 text-indigo-900 font-bold py-2 px-6 rounded-full text-base hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105 shadow-lg">Ir a la página</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- App Card: Coaching Cuántico -->
+                    <div class="flip-card fade-in-section aspect-video lg:aspect-[4/3]" style="transition-delay: 300ms;">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <div class="text-6xl md:text-7xl mb-4" role="img" aria-label="Mago">🧙🏻</div>
+                                <h3 class="text-2xl md:text-3xl font-bold text-white">Coaching Cuántico</h3>
+                                <p class="text-indigo-300 mt-2 font-display">Toca para saber más</p>
+                                <a href="https://coaching-cuantico.netlify.app/" target="_blank" class="mt-4 inline-block bg-yellow-400 text-indigo-900 font-bold py-2 px-6 rounded-full text-base hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105 shadow-lg">Ir a la página</a>
+                            </div>
+                            <div class="flip-card-back">
+                                <h3 class="text-xl md:text-2xl font-bold text-white mb-2">Coaching Cuántico</h3>
+                                <p class="font-display text-yellow-400 mb-3 text-sm md:text-base">Armoniza tu energía, expande tu potencial.</p>
+                                <p class="text-indigo-200 mb-4 text-xs md:text-sm">Terapia holística y sesiones personales para limpiar tus energías, abrir caminos y conectar con la abundancia.</p>
+                                <a href="#" class="font-bold text-yellow-400 transition text-base md:text-lg hover:text-yellow-300" style="text-shadow: 0 0 8px transparent; transition: text-shadow 0.3s ease;" onmouseover="this.style.textShadow='0 0 12px var(--glow-color)'" onmouseout="this.style.textShadow='0 0 8px transparent'">Agendar Sesión &rarr;</a>
+                                <a href="https://coaching-cuantico.netlify.app/" target="_blank" class="mt-2 inline-block bg-yellow-400 text-indigo-900 font-bold py-2 px-6 rounded-full text-base hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105 shadow-lg">Ir a la página</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <h2 class="font-orbitron text-2xl mb-2" style="color:#39FF14;text-shadow:0 0 10px #39FF14,0 0 20px #fff;">Orion</h2>
-                <p class="text-gray-300 mb-4 text-center">Suite de productividad  con IA,  flujos inteligentes de tareas y proyectos para tu vida personal o para tu empresa. Implementamos metodos de ultima generacion.</p>
-                <a href="https://orionv2.netlify.app/" target="_blank" rel="noopener" class="mt-auto px-6 py-2 bg-blue-600 text-white rounded-full font-semibold shadow hover:bg-blue-700 transition">Ver más</a>
             </div>
-            <!-- App 3 -->
-            <div class="app-card glassmorphism p-8 flex flex-col items-center border border-gray-700">
-                <div class="w-20 h-20 mb-4 flex items-center justify-center rounded-full bg-gradient-to-br from-pink-600 to-purple-400 shadow-lg">
-                    <img src="images/pleyades.webp" alt="Pleyades Icon" class="w-16 h-16 object-contain" loading="lazy">
-                </div>
-                <h2 class="font-orbitron text-2xl mb-2" style="color:#39FF14;text-shadow:0 0 10px #39FF14,0 0 20px #fff;">Pleyades</h2>
-                <p class="text-gray-300 mb-4 text-center">Portal de informacion y visualización avanzada. Convierte información compleja en insights claros y accionables para tu vida personal. Transforma tu realidad con contenido simple, claro y efectivo.</p>
-                <a href="https://pleyades.netlify.app" target="_blank" rel="noopener" class="mt-auto px-6 py-2 bg-blue-600 text-white rounded-full font-semibold shadow hover:bg-blue-700 transition">Ver más</a>
-            </div>
-        </div>
+        </section>
     </main>
     <!-- Footer con redes sociales y textos -->
     <footer class="w-full py-8 flex flex-col items-center justify-center bg-transparent">
-        <!-- Redes Sociales en el Footer -->
-        <div class="w-full flex justify-center items-center mb-4">
-            <div class="flex gap-8">
-                <a href="https://www.instagram.com/neptunestudios.ia/" target="_blank" rel="noopener" aria-label="Instagram Neptune Studios" class="group">
-                    <svg class="w-8 h-8 text-pink-500 group-hover:text-pink-400 transition" fill="currentColor" viewBox="0 0 24 24"><path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5A4.25 4.25 0 0 0 20.5 16.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zm4.25 3.25a5.25 5.25 0 1 1 0 10.5a5.25 5.25 0 0 1 0-10.5zm0 1.5a3.75 3.75 0 1 0 0 7.5a3.75 3.75 0 0 0 0-7.5zm5.25.75a1 1 0 1 1-2 0a1 1 0 0 1 2 0z"/></svg>
-                </a>
-                <a href="https://x.com/NeptuneStudioia" target="_blank" rel="noopener" aria-label="X (Twitter) Neptune Studios" class="group">
-                    <svg class="w-8 h-8 text-gray-400 group-hover:text-white transition" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                </a>
-            </div>
-        </div>
-        <!-- Texto de derechos reservados -->
-        <div class="w-full flex flex-col items-center justify-center">
-            <span class="block text-center text-purple-200 text-base font-semibold mb-2">© 2025 NEPTUNE Studios. Todos los derechos reservados.</span>
-            <div class="text-center text-gray-400 text-sm">
-                <a href="politica-privacidad.html" class="hover:text-purple-400">Política de Privacidad</a> |
-                <a href="terminos-servicio.html" class="hover:text-purple-400">Términos de Servicio</a>
+        <div class="container mx-auto px-6 text-center text-indigo-300">
+            <p>&copy; <span id="year"></span> Neptune Studios. Todos los derechos reservados.</p>
+            <p class="text-sm mt-1">Creado con pasi&oacute;n y tecnolog&iacute;a c&oacute;smica.</p>
+            <div class="text-center text-gray-400 text-sm mt-2">
+                <a href="politica-privacidad.html" class="hover:text-yellow-400">Política de Privacidad</a> |
+                <a href="terminos-servicio.html" class="hover:text-yellow-400">Términos de Servicio</a>
             </div>
         </div>
     </footer>
@@ -122,21 +288,83 @@
             <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.787"/>
         </svg>
     </a>
-    <script src="script_production.js"></script>
     <script>
-        // Inicializar fondo 3D si existe la función
-        if (typeof init3DBackground === 'function' && typeof animate3D === 'function') {
-            init3DBackground();
-            animate3D();
-        } else {
-            // Esperar a que cargue el script principal
-            window.addEventListener('DOMContentLoaded', function() {
-                if (typeof init3DBackground === 'function' && typeof animate3D === 'function') {
-                    init3DBackground();
-                    animate3D();
-                }
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- Starfield & Parallax ---
+            const starfield = document.getElementById('starfield-container');
+            const starCount = 200;
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                const size = Math.random() * 2 + 1;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.animationDelay = `${Math.random() * 5}s`;
+                star.dataset.speed = Math.random() * 0.5 + 0.1;
+                starfield.appendChild(star);
+            }
+            function createShootingStar() {
+                const star = document.createElement('div');
+                star.className = 'shooting-star';
+                star.style.top = `${Math.random() * 60}%`;
+                star.style.left = `-${Math.random() * 100}%`;
+                starfield.appendChild(star);
+                setTimeout(() => {
+                    star.remove();
+                }, 3000);
+            }
+            setInterval(createShootingStar, 5000);
+            window.addEventListener('scroll', () => {
+                const scrolled = window.pageYOffset;
+                const stars = document.querySelectorAll('.star');
+                stars.forEach(star => {
+                    const speed = star.dataset.speed;
+                    const yPos = -(scrolled * speed);
+                    star.style.transform = `translateY(${yPos}px)`;
+                });
             });
-        }
+            // Lógica de flip y tilt para las flip-cards
+            const flipCards = document.querySelectorAll('.flip-card');
+            flipCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    this.style.transform = '';
+                    this.classList.toggle('is-flipped');
+                });
+                card.addEventListener('mousemove', (e) => {
+                    if (card.classList.contains('is-flipped')) {
+                        return;
+                    }
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const { width, height } = rect;
+                    const rotateX = (y / height - 0.5) * -20;
+                    const rotateY = (x / width - 0.5) * 20;
+                    card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = '';
+                });
+            });
+            // Fade-in animation on scroll
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, {
+                threshold: 0.2
+            });
+            const sections = document.querySelectorAll('.fade-in-section');
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+            // Año dinámico en el footer
+            document.getElementById('year').textContent = new Date().getFullYear();
+        });
     </script>
 </body>
 </html>
