@@ -167,6 +167,26 @@
             text-fill-color: transparent;
             text-shadow: 0 0 15px rgba(253, 224, 71, 0.3);
         }
+        /* --- Mobile-specific improvements for catalog cards --- */
+        .only-desktop { display: inline; }
+        .mobile-details { display: none; }
+        @media (max-width: 768px) {
+            /* Disable flip/tilt on mobile for better UX */
+            .flip-card { cursor: default; }
+            .flip-card .flip-card-inner { transform: none !important; }
+            /* Make cards auto-height in mobile to avoid clipping */
+            .flip-card, .flip-card .flip-card-inner { height: auto !important; }
+            .aspect-video { aspect-ratio: auto !important; height: auto !important; }
+            .flip-card-front, .flip-card-back { position: relative; transform: none !important; height: auto !important; }
+            .flip-card-back { display: none !important; }
+            /* Avoid cutting content and CTA inside the rounded card */
+            .flip-card-front { overflow: visible !important; padding-bottom: 1rem; }
+            .only-desktop { display: none !important; }
+            .mobile-details { display: block; margin-top: 0.5rem; color: #c7d2fe; font-size: 0.95rem; }
+            .mobile-cta { display: block; width: 100%; text-align: center; }
+            #apps .text-6xl { font-size: 2.5rem; }
+            #apps h3 { font-size: 1.5rem; }
+        }
     </style>
 </head>
 <body class="relative overflow-x-hidden">
@@ -195,8 +215,9 @@
                             <div class="flip-card-front">
                                 <div class="text-6xl md:text-7xl mb-4" role="img" aria-label="Saturno">🪐</div>
                                 <h3 class="text-2xl md:text-3xl font-bold text-white">Nebula</h3>
-                                <p class="text-indigo-300 mt-2 font-display">Toca para saber más</p>
-                                <a href="https://nebula-v3.netlify.app/" target="_blank" class="mt-4 inline-block bg-yellow-400 text-indigo-900 font-bold py-2 px-6 rounded-full text-base hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105 shadow-lg">Ir a la página</a>
+                                <p class="text-indigo-300 mt-2 font-display only-desktop">Toca para saber más</p>
+                                <p class="mobile-details">Tu universo financiero en orden: agenda gastos, administra finanzas y proyecta ahorros.</p>
+                                <a href="https://nebula-v3.netlify.app/" target="_blank" class="mt-4 inline-block bg-yellow-400 text-indigo-900 font-bold py-2 px-6 rounded-full text-base hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105 shadow-lg mobile-cta">Ir a la página</a>
                             </div>
                             <div class="flip-card-back">
                                 <h3 class="text-xl md:text-2xl font-bold text-white mb-2">Nebula</h3>
@@ -213,8 +234,9 @@
                             <div class="flip-card-front">
                                 <div class="text-6xl md:text-7xl mb-4" role="img" aria-label="Caja Bento">🍱</div>
                                 <h3 class="text-2xl md:text-3xl font-bold text-white">KiloByte</h3>
-                                <p class="text-indigo-300 mt-2 font-display">Toca para saber más</p>
-                                <a href="https://kilobytesapp.netlify.app/" target="_blank" class="mt-4 inline-block bg-yellow-400 text-indigo-900 font-bold py-2 px-6 rounded-full text-base hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105 shadow-lg">Ir a la página</a>
+                                <p class="text-indigo-300 mt-2 font-display only-desktop">Toca para saber más</p>
+                                <p class="mobile-details">Gestiona tu dieta, registra comidas y sigue planes a tu medida con control de calorías.</p>
+                                <a href="https://kilobytesapp.netlify.app/" target="_blank" class="mt-4 inline-block bg-yellow-400 text-indigo-900 font-bold py-2 px-6 rounded-full text-base hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105 shadow-lg mobile-cta">Ir a la página</a>
                             </div>
                             <div class="flip-card-back">
                                 <h3 class="text-xl md:text-2xl font-bold text-white mb-2">KiloByte</h3>
@@ -231,8 +253,9 @@
                             <div class="flip-card-front">
                                 <div class="text-6xl md:text-7xl mb-4" role="img" aria-label="Luna Creciente">🌙</div>
                                 <h3 class="text-2xl md:text-3xl font-bold text-white">AstroLab</h3>
-                                <p class="text-indigo-300 mt-2 font-display">Toca para saber más</p>
-                                <a href="https://astrolab-web.netlify.app/" target="_blank" class="mt-4 inline-block bg-yellow-400 text-indigo-900 font-bold py-2 px-6 rounded-full text-base hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105 shadow-lg">Ir a la página</a>
+                                <p class="text-indigo-300 mt-2 font-display only-desktop">Toca para saber más</p>
+                                <p class="mobile-details">Descifra tu carta natal, aprende astrología y supera bloqueos energéticos para crecer.</p>
+                                <a href="https://astrolab-web.netlify.app/" target="_blank" class="mt-4 inline-block bg-yellow-400 text-indigo-900 font-bold py-2 px-6 rounded-full text-base hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105 shadow-lg mobile-cta">Ir a la página</a>
                             </div>
                             <div class="flip-card-back">
                                 <h3 class="text-xl md:text-2xl font-bold text-white mb-2">AstroLab</h3>
@@ -249,8 +272,9 @@
                             <div class="flip-card-front">
                                 <div class="text-6xl md:text-7xl mb-4" role="img" aria-label="Mago">🧙🏻</div>
                                 <h3 class="text-2xl md:text-3xl font-bold text-white">Coaching Cuántico</h3>
-                                <p class="text-indigo-300 mt-2 font-display">Toca para saber más</p>
-                                <a href="https://coaching-cuantico.netlify.app/" target="_blank" class="mt-4 inline-block bg-yellow-400 text-indigo-900 font-bold py-2 px-6 rounded-full text-base hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105 shadow-lg">Ir a la página</a>
+                                <p class="text-indigo-300 mt-2 font-display only-desktop">Toca para saber más</p>
+                                <p class="mobile-details">Terapia holística para armonizar tu energía, abrir caminos y conectar con la abundancia.</p>
+                                <a href="https://coaching-cuantico.netlify.app/" target="_blank" class="mt-4 inline-block bg-yellow-400 text-indigo-900 font-bold py-2 px-6 rounded-full text-base hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105 shadow-lg mobile-cta">Ir a la página</a>
                             </div>
                             <div class="flip-card-back">
                                 <h3 class="text-xl md:text-2xl font-bold text-white mb-2">Coaching Cuántico</h3>
@@ -327,7 +351,13 @@
             });
             // Lógica de flip y tilt para las flip-cards
             const flipCards = document.querySelectorAll('.flip-card');
+            const isMobile = window.matchMedia('(max-width: 768px)').matches;
             flipCards.forEach(card => {
+                if (isMobile) {
+                    // Disable flip/tilt interactions on mobile
+                    card.style.transform = '';
+                    return;
+                }
                 card.addEventListener('click', function() {
                     this.style.transform = '';
                     this.classList.toggle('is-flipped');
